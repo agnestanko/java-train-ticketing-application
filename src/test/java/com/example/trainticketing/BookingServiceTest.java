@@ -49,18 +49,18 @@ public class BookingServiceTest {
     }
 
     private Train createSampleTrain() {
-        Station berlin = new Station("ST-001", "Berlin", "Berlin");
-        Station frankfurt = new Station("ST-002", "Frankfurt", "Frankfurt");
+        Station timisoara = new Station("ST-001", "Timisoara Nord", "Timisoara");
+        Station bucuresti = new Station("ST-002", "Bucuresti Nord", "Bucuresti");
 
-        Route route = new Route("RT-001", "Berlin to Frankfurt Route");
-        route.addStation(berlin);
-        route.addStation(frankfurt);
+        Route route = new Route("RT-001", "Timisoara Nord to Bucuresti Nord Route");
+        route.addStation(timisoara);
+        route.addStation(bucuresti);
 
         Schedule schedule = new Schedule(
                 LocalDateTime.of(2026, 5, 10, 9, 0),
                 LocalDateTime.of(2026, 5, 10, 13, 30)
         );
 
-        return new Train("IC101", "InterCity Express", 50, route, schedule);
+        return new Train("IR1746", "InterRegio Timisoara Nord - Bucuresti Nord", "InterRegio", 50, 89.50, route, schedule);
     }
 }

@@ -24,10 +24,10 @@ public class RouteServiceTest {
         Train train = createSampleTrain();
         trainRepository.addTrain(train);
 
-        List<Train> results = routeService.searchDirectTrains("Berlin", "Frankfurt");
+        List<Train> results = routeService.searchDirectTrains("Timisoara Nord", "Bucuresti Nord");
 
         assertEquals(1, results.size());
-        assertEquals("IC101", results.get(0).getTrainId());
+        assertEquals("IR1746", results.get(0).getTrainId());
     }
 
     @Test
@@ -38,7 +38,7 @@ public class RouteServiceTest {
         Train train = createSampleTrain();
         trainRepository.addTrain(train);
 
-        List<Train> results = routeService.searchDirectTrains("Frankfurt", "Berlin");
+        List<Train> results = routeService.searchDirectTrains("Bucuresti Nord", "Timisoara Nord");
 
         assertEquals(0, results.size());
     }
@@ -50,25 +50,25 @@ public class RouteServiceTest {
 
         assertThrows(
                 IllegalArgumentException.class,
-                () -> routeService.searchDirectTrains("Berlin", "Berlin")
+                () -> routeService.searchDirectTrains("Timisoara Nord", "Timisoara Nord")
         );
     }
 
     private Train createSampleTrain() {
-        Station berlin = new Station("ST-001", "Berlin", "Berlin");
-        Station leipzig = new Station("ST-002", "Leipzig", "Leipzig");
-        Station frankfurt = new Station("ST-003", "Frankfurt", "Frankfurt");
+        Station timisoara = new Station("ST-001", "Timisoara Nord", "Timisoara");
+        Station arad = new Station("ST-002", "Arad", "Arad");
+        Station bucuresti = new Station("ST-003", "Bucuresti Nord", "Bucuresti");
 
-        Route route = new Route("RT-001", "Berlin to Frankfurt Route");
-        route.addStation(berlin);
-        route.addStation(leipzig);
-        route.addStation(frankfurt);
+        Route route = new Route("RT-001", "Timisoara Nord to Bucuresti Nord Route");
+        route.addStation(timisoara);
+        route.addStation(arad);
+        route.addStation(bucuresti);
 
         Schedule schedule = new Schedule(
                 LocalDateTime.of(2026, 5, 10, 9, 0),
                 LocalDateTime.of(2026, 5, 10, 13, 30)
         );
 
-        return new Train("IC101", "InterCity Express", 100, route, schedule);
+        return new Train("IR1746", "InterRegio Timisoara Nord - Bucuresti Nord", "InterRegio", 100, 89.50, route, schedule);
     }
 }

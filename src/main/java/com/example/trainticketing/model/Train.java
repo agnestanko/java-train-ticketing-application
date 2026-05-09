@@ -3,15 +3,19 @@ package com.example.trainticketing.model;
 public class Train {
     private String trainId;
     private String trainName;
+    private String trainType;
     private int capacity;
+    private double ticketPrice;
     private Route route;
     private Schedule schedule;
     private int delayMinutes;
 
-    public Train(String trainId, String trainName, int capacity, Route route, Schedule schedule) {
+    public Train(String trainId, String trainName, String trainType, int capacity, double ticketPrice, Route route, Schedule schedule) {
         this.trainId = trainId;
         this.trainName = trainName;
+        this.trainType = trainType;
         this.capacity = capacity;
+        this.ticketPrice = ticketPrice;
         this.route = route;
         this.schedule = schedule;
         this.delayMinutes = 0;
@@ -33,12 +37,28 @@ public class Train {
         this.trainName = trainName;
     }
 
+    public String getTrainType() {
+        return trainType;
+    }
+
+    public void setTrainType(String trainType) {
+        this.trainType = trainType;
+    }
+
     public int getCapacity() {
         return capacity;
     }
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public double getTicketPrice() {
+        return ticketPrice;
+    }
+
+    public void setTicketPrice(double ticketPrice) {
+        this.ticketPrice = ticketPrice;
     }
 
     public Route getRoute() {
@@ -72,7 +92,9 @@ public class Train {
     @Override
     public String toString() {
         return trainId + " - " + trainName
+                + " [" + trainType + "]"
                 + ", capacity: " + capacity
+                + ", price: " + String.format("%.2f", ticketPrice) + " RON"
                 + ", route: " + route.getRouteName()
                 + ", " + schedule
                 + ", delay: " + delayMinutes + " minutes";

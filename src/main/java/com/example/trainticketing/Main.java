@@ -62,55 +62,83 @@ public class Main {
     }
 
     private static void loadSampleData() {
-        Station berlin = new Station("ST-001", "Berlin", "Berlin");
-        Station leipzig = new Station("ST-002", "Leipzig", "Leipzig");
-        Station frankfurt = new Station("ST-003", "Frankfurt", "Frankfurt");
-        Station munich = new Station("ST-004", "Munich", "Munich");
-        Station hamburg = new Station("ST-005", "Hamburg", "Hamburg");
+        Station timisoara = new Station("ST-001", "Timisoara Nord", "Timisoara");
+        Station arad = new Station("ST-002", "Arad", "Arad");
+        Station oradea = new Station("ST-003", "Oradea", "Oradea");
+        Station cluj = new Station("ST-004", "Cluj-Napoca", "Cluj-Napoca");
+        Station brasov = new Station("ST-005", "Brasov", "Brasov");
+        Station bucuresti = new Station("ST-006", "Bucuresti Nord", "Bucuresti");
 
-        adminService.addStation(berlin);
-        adminService.addStation(leipzig);
-        adminService.addStation(frankfurt);
-        adminService.addStation(munich);
-        adminService.addStation(hamburg);
+        adminService.addStation(timisoara);
+        adminService.addStation(arad);
+        adminService.addStation(oradea);
+        adminService.addStation(cluj);
+        adminService.addStation(brasov);
+        adminService.addStation(bucuresti);
 
-        Route routeOne = new Route("RT-001", "Berlin to Frankfurt Route");
-        routeOne.addStation(berlin);
-        routeOne.addStation(leipzig);
-        routeOne.addStation(frankfurt);
+        Route routeOne = new Route("RT-001", "Timisoara Nord to Bucuresti Nord Route");
+        routeOne.addStation(timisoara);
+        routeOne.addStation(arad);
+        routeOne.addStation(cluj);
+        routeOne.addStation(brasov);
+        routeOne.addStation(bucuresti);
 
-        Route routeTwo = new Route("RT-002", "Hamburg to Munich Route");
-        routeTwo.addStation(hamburg);
-        routeTwo.addStation(berlin);
-        routeTwo.addStation(munich);
+        Route routeTwo = new Route("RT-002", "Oradea to Bucuresti Nord Route");
+        routeTwo.addStation(oradea);
+        routeTwo.addStation(cluj);
+        routeTwo.addStation(brasov);
+        routeTwo.addStation(bucuresti);
+
+        Route routeThree = new Route("RT-003", "Arad to Timisoara Nord Route");
+        routeThree.addStation(arad);
+        routeThree.addStation(timisoara);
 
         adminService.addRoute(routeOne);
         adminService.addRoute(routeTwo);
+        adminService.addRoute(routeThree);
 
         Train trainOne = new Train(
-                "IC101",
-                "InterCity Express",
-                100,
+                "IR1746",
+                "InterRegio Timisoara Nord - Bucuresti Nord",
+                "InterRegio",
+                120,
+                89.50,
                 routeOne,
                 new Schedule(
-                        LocalDateTime.of(2026, 5, 10, 9, 0),
-                        LocalDateTime.of(2026, 5, 10, 13, 30)
+                        LocalDateTime.of(2026, 5, 10, 7, 15),
+                        LocalDateTime.of(2026, 5, 10, 17, 45)
                 )
         );
 
         Train trainTwo = new Train(
-                "ICE202",
-                "High Speed Express",
-                80,
+                "IR1833",
+                "InterRegio Oradea - Bucuresti Nord",
+                "InterRegio",
+                100,
+                95.00,
                 routeTwo,
                 new Schedule(
-                        LocalDateTime.of(2026, 5, 10, 10, 0),
-                        LocalDateTime.of(2026, 5, 10, 15, 45)
+                        LocalDateTime.of(2026, 5, 10, 8, 30),
+                        LocalDateTime.of(2026, 5, 10, 18, 20)
+                )
+        );
+
+        Train trainThree = new Train(
+                "R2602",
+                "Regio Arad - Timisoara Nord",
+                "Regio",
+                80,
+                18.50,
+                routeThree,
+                new Schedule(
+                        LocalDateTime.of(2026, 5, 10, 6, 40),
+                        LocalDateTime.of(2026, 5, 10, 7, 55)
                 )
         );
 
         adminService.addTrain(trainOne);
         adminService.addTrain(trainTwo);
+        adminService.addTrain(trainThree);
     }
 
     private static void showMainMenu() {

@@ -8,6 +8,7 @@ public class Booking {
     private Train train;
     private int numberOfTickets;
     private LocalDateTime bookingTime;
+    private String status;
 
     public Booking(String bookingId, Customer customer, Train train, int numberOfTickets) {
         this.bookingId = bookingId;
@@ -15,6 +16,7 @@ public class Booking {
         this.train = train;
         this.numberOfTickets = numberOfTickets;
         this.bookingTime = LocalDateTime.now();
+        this.status = "CONFIRMED";
     }
 
     public String getBookingId() {
@@ -57,12 +59,26 @@ public class Booking {
         this.bookingTime = bookingTime;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public double getTotalPrice() {
+        return train.getTicketPrice() * numberOfTickets;
+    }
+
     @Override
     public String toString() {
         return "Booking ID: " + bookingId
                 + ", Customer: " + customer.getName()
                 + ", Train: " + train.getTrainId()
                 + ", Tickets: " + numberOfTickets
+                + ", Total price: " + String.format("%.2f", getTotalPrice()) + " RON"
+                + ", Status: " + status
                 + ", Time: " + bookingTime;
     }
 }
