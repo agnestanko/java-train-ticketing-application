@@ -4,7 +4,9 @@
 
 This project is a Java console application for searching train routes, booking train tickets, managing train data, and notifying customers about bookings and delays.
 
-The application uses predefined train stations, routes, schedules, and trains. Customers can search for available routes, book one or multiple tickets, and receive a simulated email confirmation. Administrators can view bookings and report train delays. When a delay is reported, booked customers are notified through a simulated email message in the console.
+The application uses predefined Romanian train stations, routes, schedules, and trains. Customers can search for available routes, book one or multiple tickets, and receive a simulated email confirmation. Administrators can view bookings and report train delays. When a delay is reported, booked customers are notified through a simulated email message in the console.
+
+The project is implemented using object-oriented programming principles and is divided into model, repository, and service layers.
 
 ## Main Features
 
@@ -16,7 +18,9 @@ The application uses predefined train stations, routes, schedules, and trains. C
 - View bookings for a selected train
 - Report train delays
 - Send simulated delay notification emails
-- Use predefined sample stations, routes, trains, and schedules
+- Use predefined Romanian stations, routes, trains, and schedules
+- Calculate ticket price and total booking price
+- Store booking status as CONFIRMED
 - Include unit tests for booking and route search functionality
 
 ## Technologies Used
@@ -59,45 +63,65 @@ src/
         └── com/example/trainticketing/
             ├── BookingServiceTest.java
             └── RouteServiceTest.java
-Sample Data
+```
 
-The application starts with predefined stations:
+## Sample Data
 
-Berlin
-Leipzig
-Frankfurt
-Munich
-Hamburg
+The application starts with predefined Romanian train stations:
+
+```text
+Timisoara Nord
+Arad
+Oradea
+Cluj-Napoca
+Brasov
+Bucuresti Nord
+```
 
 Predefined routes:
 
-Berlin → Leipzig → Frankfurt
-Hamburg → Berlin → Munich
+```text
+Timisoara Nord → Arad → Cluj-Napoca → Brasov → Bucuresti Nord
+Oradea → Cluj-Napoca → Brasov → Bucuresti Nord
+Arad → Timisoara Nord
+```
 
 Predefined trains:
 
-IC101 - InterCity Express
-ICE202 - High Speed Express
-How to Run the Project
+```text
+IR1746 - InterRegio Timisoara Nord - Bucuresti Nord
+IR1833 - InterRegio Oradea - Bucuresti Nord
+R2602 - Regio Arad - Timisoara Nord
+```
+
+## How to Run the Project
 
 Clone the repository:
 
+```bash
 git clone https://github.com/agnestanko/java-train-ticketing-application.git
+```
 
 Open the project in IntelliJ IDEA.
 
-Run:
+Run this file:
 
+```text
 src/main/java/com/example/trainticketing/Main.java
+```
 
 Alternatively, if Maven is installed, run:
 
+```bash
 mvn clean test
 mvn exec:java
-Console Menu
+```
+
+## Console Menu
 
 When the application starts, the user can choose from the following menu:
 
+```text
 ===== TRAIN TICKETING SYSTEM =====
 1. Show all stations
 2. Search train route
@@ -106,80 +130,136 @@ When the application starts, the user can choose from the following menu:
 5. Report train delay
 6. Show all trains
 7. Exit
-Example Input and Output
-Show All Stations
+Choose an option:
+```
+
+## Example Input and Output
+
+### 1. Show All Stations
 
 Input:
 
+```text
 1
+```
 
 Output:
 
+```text
 ===== AVAILABLE STATIONS =====
-Berlin (Berlin)
-Leipzig (Leipzig)
-Frankfurt (Frankfurt)
-Munich (Munich)
-Hamburg (Hamburg)
-Search Train Route
+Timisoara Nord (Timisoara)
+Arad (Arad)
+Oradea (Oradea)
+Cluj-Napoca (Cluj-Napoca)
+Brasov (Brasov)
+Bucuresti Nord (Bucuresti)
+```
+
+### 2. Search Train Route
 
 Input:
 
+```text
 2
-Berlin
-Frankfurt
+Timisoara Nord
+Bucuresti Nord
+```
 
 Output:
 
-Search results from Berlin to Frankfurt:
-IC101 - InterCity Express, capacity: 100, route: Berlin to Frankfurt Route, Departure: 2026-05-10 09:00, Arrival: 2026-05-10 13:30, delay: 0 minutes
-Book Ticket
+```text
+===== SEARCH TRAIN ROUTE =====
+Enter departure station: Timisoara Nord
+Enter arrival station: Bucuresti Nord
+
+Search results from Timisoara Nord to Bucuresti Nord:
+IR1746 - InterRegio Timisoara Nord - Bucuresti Nord [InterRegio], capacity: 120, price: 89.50 RON, route: Timisoara Nord to Bucuresti Nord Route, Departure: 2026-05-10 07:15, Arrival: 2026-05-10 17:45, delay: 0 minutes
+```
+
+### 3. Book Ticket
 
 Input:
 
+```text
 3
-IC101
+IR1746
 Alice Brown
 alice@example.com
 2
+```
 
 Output:
 
+```text
+===== BOOK TICKET =====
+Enter train ID: IR1746
+Enter customer name: Alice Brown
+Enter customer email: alice@example.com
+Enter number of tickets: 2
+
 ===== EMAIL NOTIFICATION =====
 To: alice@example.com
-Subject: Train Ticket Booking Confirmation
+Subject: Train Ticket Booking Confirmation - BK-12345678
 Message:
 Dear Alice Brown,
 
-Your booking has been confirmed.
+Your booking has been confirmed successfully.
 
-Train: IC101 - InterCity Express
+Booking details:
+Booking ID: BK-12345678
+Status: CONFIRMED
+Train: IR1746 - InterRegio Timisoara Nord - Bucuresti Nord
+Train type: InterRegio
+Route: Timisoara Nord to Bucuresti Nord Route
+Schedule: Departure: 2026-05-10 07:15, Arrival: 2026-05-10 17:45
 Tickets: 2
+Price per ticket: 89.50 RON
+Total price: 179.00 RON
+
+Please arrive at the station at least 15 minutes before departure.
 
 Thank you for using our Train Ticketing Application.
 ==============================
 
-Booking created successfully.
-Available seats after booking: 98
-View Bookings
+Booking created successfully:
+Booking ID: BK-12345678, Customer: Alice Brown, Train: IR1746, Tickets: 2, Total price: 179.00 RON, Status: CONFIRMED
+Available seats after booking: 118
+```
+
+### 4. View Bookings for Train
 
 Input:
 
+```text
 4
-IC101
+IR1746
+```
 
 Output:
 
-Booking ID: BK-12345678, Customer: Alice Brown, Train: IC101, Tickets: 2
-Report Delay
+```text
+===== VIEW BOOKINGS FOR TRAIN =====
+Enter train ID: IR1746
+
+Booking ID: BK-12345678, Customer: Alice Brown, Train: IR1746, Tickets: 2, Total price: 179.00 RON, Status: CONFIRMED
+```
+
+### 5. Report Train Delay
 
 Input:
 
+```text
 5
-IC101
+IR1746
 20
+```
 
 Output:
+
+```text
+===== REPORT TRAIN DELAY =====
+Enter train ID: IR1746
+Enter delay in minutes: 20
 
 ===== EMAIL NOTIFICATION =====
 To: alice@example.com
@@ -189,7 +269,8 @@ Dear Alice Brown,
 
 We inform you that your train is delayed.
 
-Train: IC101 - InterCity Express
+Booking ID: BK-12345678
+Train: IR1746 - InterRegio Timisoara Nord - Bucuresti Nord
 Delay: 20 minutes
 
 We apologize for the inconvenience.
@@ -198,72 +279,179 @@ We apologize for the inconvenience.
 Delay reported successfully.
 ```
 
-### Testing
+### 6. Show All Trains
 
+Input:
+
+```text
+6
+```
+
+Output:
+
+```text
+===== AVAILABLE TRAINS =====
+IR1746 - InterRegio Timisoara Nord - Bucuresti Nord [InterRegio], capacity: 120, price: 89.50 RON, route: Timisoara Nord to Bucuresti Nord Route, Departure: 2026-05-10 07:15, Arrival: 2026-05-10 17:45, delay: 0 minutes
+Available seats: 120
+
+IR1833 - InterRegio Oradea - Bucuresti Nord [InterRegio], capacity: 100, price: 95.00 RON, route: Oradea to Bucuresti Nord Route, Departure: 2026-05-10 08:30, Arrival: 2026-05-10 18:20, delay: 0 minutes
+Available seats: 100
+
+R2602 - Regio Arad - Timisoara Nord [Regio], capacity: 80, price: 18.50 RON, route: Arad to Timisoara Nord Route, Departure: 2026-05-10 06:40, Arrival: 2026-05-10 07:55, delay: 0 minutes
+Available seats: 80
+```
+
+### 7. Exit
+
+Input:
+
+```text
+7
+```
+
+Output:
+
+```text
+Thank you for using the Train Ticketing Application.
+```
+
+## Testing
 
 The project includes JUnit tests for important functionality.
 
 Tested features:
 
-Booking succeeds when seats are available
-Booking fails when there are not enough seats
-Route search finds a direct route
-Route search returns empty result when no route exists
-Route search fails when departure and arrival stations are the same
+- Booking succeeds when seats are available
+- Booking fails when there are not enough seats
+- Route search finds a direct route
+- Route search returns an empty result when no route exists
+- Route search fails when departure and arrival stations are the same
 
 Run tests in IntelliJ by right-clicking:
 
+```text
 src/test/java
+```
 
 and selecting:
 
+```text
 Run All Tests
+```
 
 Or with Maven:
 
+```bash
 mvn test
-Design Explanation
+```
 
-The application is divided into several layers:
+## Design Explanation
 
-Model Layer
+The application is divided into three main layers.
+
+### Model Layer
 
 Contains the main data classes:
 
-Station
-Route
-Train
-Schedule
-Customer
-Booking
-Repository Layer
+- `Station`
+- `Route`
+- `Train`
+- `Schedule`
+- `Customer`
+- `Booking`
+
+These classes represent the main objects used by the train ticketing system.
+
+### Repository Layer
 
 Stores data in memory using Java collections.
 
 This project does not require an external database. The repositories use lists to store stations, routes, trains, and bookings.
 
-Service Layer
+### Service Layer
 
 Contains the main business logic:
 
-BookingService handles ticket booking and overbooking prevention
-RouteService handles route search
-AdminService handles administrator operations
-EmailService defines email functionality
-ConsoleEmailService simulates email sending in the console
-Current Limitations
-Data is stored in memory, so it resets when the program restarts
-Email notifications are simulated in the console
-Route search currently supports direct routes from the predefined train route order
-The application is console-based and does not include a graphical interface
-Possible Future Improvements
-Add a real database such as H2, MySQL, or PostgreSQL
-Add real email sending using JavaMail or Spring Boot Mail
-Add login system for administrators
-Add support for more complex route changeovers
-Add a graphical interface or web interface
-Save bookings to files or database
+- `BookingService` handles ticket booking, available seat calculation, and overbooking prevention
+- `RouteService` handles route search
+- `AdminService` handles administrator operations such as viewing bookings and reporting delays
+- `EmailService` defines email functionality
+- `ConsoleEmailService` simulates email sending in the console
 
-Author
+## Overbooking Prevention
+
+The application prevents overbooking by calculating the available seats before creating a booking.
+
+The logic is:
+
+```text
+available seats = train capacity - already booked seats
+```
+
+If the customer requests more tickets than available seats, the booking is rejected.
+
+Example:
+
+```text
+Train capacity: 120
+Already booked seats: 118
+Requested tickets: 3
+Result: Booking failed because only 2 seats are available.
+```
+
+## Email Notification System
+
+The project includes an email service interface:
+
+```text
+EmailService
+```
+
+The current implementation is:
+
+```text
+ConsoleEmailService
+```
+
+This means that emails are simulated in the console instead of being sent through a real email server.
+
+The application sends emails for:
+
+- successful booking confirmation
+- train delay notification
+
+## Administrator Functionalities
+
+The administrator can:
+
+- view all trains
+- view bookings for a selected train
+- report train delays
+- notify customers about delays
+
+The project also contains service and repository methods that support adding and removing stations, routes, and trains.
+
+## Current Limitations
+
+- Data is stored in memory, so it resets when the program restarts
+- Email notifications are simulated in the console
+- Route search currently supports direct routes from the predefined train route order
+- The application is console-based and does not include a graphical interface
+- Administrator login is not implemented yet
+
+## Possible Future Improvements
+
+- Add a real database such as H2, MySQL, or PostgreSQL
+- Add real email sending using JavaMail or Spring Boot Mail
+- Add login system for administrators
+- Add support for more complex route changeovers
+- Add a graphical interface or web interface
+- Save bookings to files or database
+- Add more unit tests
+- Add input validation for email format
+
+## Author
 Agnes-Maria Tanko
 
+## Repository Link
+https://github.com/agnestanko/java-train-ticketing-application
