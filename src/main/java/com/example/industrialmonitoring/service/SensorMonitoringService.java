@@ -11,6 +11,7 @@ import java.util.UUID;
 public class SensorMonitoringService {
     private final List<SensorReading> readings = new ArrayList<>();
     private final List<Alarm> alarms = new ArrayList<>();
+    private final AlarmFileService alarmFileService = new AlarmFileService();
 
     public SensorReading addReading(Sensor sensor, double value) {
         SensorReading reading = new SensorReading(sensor, value);
@@ -19,6 +20,7 @@ public class SensorMonitoringService {
         if (!reading.isNormal()) {
             Alarm alarm = createAlarm(reading);
             alarms.add(alarm);
+            alarmFileService.saveAlarm(alarm);
         }
 
         return reading;
