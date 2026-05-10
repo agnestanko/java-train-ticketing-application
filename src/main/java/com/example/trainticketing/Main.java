@@ -93,9 +93,15 @@ public class Main {
         routeThree.addStation(arad);
         routeThree.addStation(timisoara);
 
+        Route routeFour = new Route("RT-004", "Cluj-Napoca to Timisoara Nord Route");
+        routeFour.addStation(cluj);
+        routeFour.addStation(arad);
+        routeFour.addStation(timisoara);
+
         adminService.addRoute(routeOne);
         adminService.addRoute(routeTwo);
         adminService.addRoute(routeThree);
+        adminService.addRoute(routeFour);
 
         Train trainOne = new Train(
                 "IR1746",
@@ -136,9 +142,23 @@ public class Main {
                 )
         );
 
+        Train trainFour = new Train(
+                "IR3001",
+                "InterRegio Cluj-Napoca - Timisoara Nord",
+                "InterRegio",
+                90,
+                62.00,
+                routeFour,
+                new Schedule(
+                        LocalDateTime.of(2026, 5, 10, 14, 20),
+                        LocalDateTime.of(2026, 5, 10, 19, 10)
+                )
+        );
+
         adminService.addTrain(trainOne);
         adminService.addTrain(trainTwo);
         adminService.addTrain(trainThree);
+        adminService.addTrain(trainFour);
     }
 
     private static void showMainMenu() {

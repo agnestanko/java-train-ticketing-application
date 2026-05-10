@@ -75,4 +75,92 @@
   "maximumAllowedValue" : 90.0,
   "message" : "Tank level sensor is below the minimum allowed value.",
   "timestamp" : "2026-05-10T18:54:44.720943"
+}, {
+  "alarmId" : "AL-7F180475",
+  "sensorId" : "PRESS-201",
+  "sensorName" : "Hydraulic pressure transducer",
+  "sensorType" : "PRESSURE",
+  "actualValue" : 12.0,
+  "unit" : "bar",
+  "minimumAllowedValue" : 2.0,
+  "maximumAllowedValue" : 10.0,
+  "message" : "Hydraulic pressure transducer is above the maximum allowed value.",
+  "timestamp" : "2026-05-10T19:20:38.333640600"
+}, {
+  "alarmId" : "AL-C8B0939A",
+  "sensorId" : "VIB-301",
+  "sensorName" : "Motor vibration sensor",
+  "sensorType" : "VIBRATION",
+  "actualValue" : 6.8,
+  "unit" : "mm/s",
+  "minimumAllowedValue" : 0.0,
+  "maximumAllowedValue" : 5.0,
+  "message" : "Motor vibration sensor is above the maximum allowed value.",
+  "timestamp" : "2026-05-10T19:20:38.349773500"
+}, {
+  "alarmId" : "AL-B0D9D254",
+  "sensorId" : "PRESS-201",
+  "sensorName" : "Hydraulic pressure transducer",
+  "sensorType" : "PRESSURE",
+  "actualValue" : 12.0,
+  "unit" : "bar",
+  "minimumAllowedValue" : 2.0,
+  "maximumAllowedValue" : 10.0,
+  "message" : "Hydraulic pressure transducer is above the maximum allowed value.",
+  "timestamp" : "2026-05-10T19:20:38.360293900"
+}, {
+  "alarmId" : "AL-3C8B04DE",
+  "sensorId" : "LEVEL-401",
+  "sensorName" : "Tank level sensor",
+  "sensorType" : "LEVEL",
+  "actualValue" : 5.0,
+  "unit" : "%",
+  "minimumAllowedValue" : 10.0,
+  "maximumAllowedValue" : 90.0,
+  "message" : "Tank level sensor is below the minimum allowed value.",
+  "timestamp" : "2026-05-10T19:20:38.384334400"
+}, {
+  "alarmId" : "AL-493FC0CA",
+  "sensorId" : "PRESS-201",
+  "sensorName" : "Hydraulic pressure transducer",
+  "sensorType" : "PRESSURE",
+  "actualValue" : 12.0,
+  "unit" : "bar",
+  "minimumAllowedValue" : 2.0,
+  "maximumAllowedValue" : 10.0,
+  "message" : "Hydraulic pressure transducer is above the maximum allowed value.",
+  "timestamp" : "2026-05-10T19:25:46.552813500"
+}, {
+  "alarmId" : "AL-3E6AA339",
+  "sensorId" : "VIB-301",
+  "sensorName" : "Motor vibration sensor",
+  "sensorType" : "VIBRATION",
+  "actualValue" : 6.8,
+  "unit" : "mm/s",
+  "minimumAllowedValue" : 0.0,
+  "maximumAllowedValue" : 5.0,
+  "message" : "Motor vibration sensor is above the maximum allowed value.",
+  "timestamp" : "2026-05-10T19:25:46.560395700"
+}, {
+  "alarmId" : "AL-F03AA319",
+  "sensorId" : "PRESS-201",
+  "sensorName" : "Hydraulic pressure transducer",
+  "sensorType" : "PRESSURE",
+  "actualValue" : 12.0,
+  "unit" : "bar",
+  "minimumAllowedValue" : 2.0,
+  "maximumAllowedValue" : 10.0,
+  "message" : "Hydraulic pressure transducer is above the maximum allowed value.",
+  "timestamp" : "2026-05-10T19:25:46.569134400"
+}, {
+  "alarmId" : "AL-D4179469",
+  "sensorId" : "LEVEL-401",
+  "sensorName" : "Tank level sensor",
+  "sensorType" : "LEVEL",
+  "actualValue" : 5.0,
+  "unit" : "%",
+  "minimumAllowedValue" : 10.0,
+  "maximumAllowedValue" : 90.0,
+  "message" : "Tank level sensor is below the minimum allowed value.",
+  "timestamp" : "2026-05-10T19:25:46.585806100"
 } ]

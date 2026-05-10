@@ -58,4 +58,34 @@
   "totalPrice" : 179.0,
   "status" : "CONFIRMED",
   "bookingTime" : "2026-05-10T18:54:44.533034600"
+}, {
+  "bookingId" : "BK-4CC0B79C",
+  "customerName" : "Alice Brown",
+  "customerEmail" : "alice@example.com",
+  "trainId" : "IR1746",
+  "trainName" : "InterRegio Timisoara Nord - Bucuresti Nord",
+  "trainType" : "InterRegio",
+  "route" : "Timisoara Nord to Bucuresti Nord Route",
+  "departureTime" : "2026-05-10T09:00",
+  "arrivalTime" : "2026-05-10T13:30",
+  "numberOfTickets" : 2,
+  "pricePerTicket" : 89.5,
+  "totalPrice" : 179.0,
+  "status" : "CONFIRMED",
+  "bookingTime" : "2026-05-10T19:20:38.133088300"
+}, {
+  "bookingId" : "BK-FA3CE22D",
+  "customerName" : "Alice Brown",
+  "customerEmail" : "alice@example.com",
+  "trainId" : "IR1746",
+  "trainName" : "InterRegio Timisoara Nord - Bucuresti Nord",
+  "trainType" : "InterRegio",
+  "route" : "Timisoara Nord to Bucuresti Nord Route",
+  "departureTime" : "2026-05-10T09:00",
+  "arrivalTime" : "2026-05-10T13:30",
+  "numberOfTickets" : 2,
+  "pricePerTicket" : 89.5,
+  "totalPrice" : 179.0,
+  "status" : "CONFIRMED",
+  "bookingTime" : "2026-05-10T19:25:46.324489600"
 } ]

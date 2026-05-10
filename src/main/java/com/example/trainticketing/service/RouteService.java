@@ -1,8 +1,11 @@
 package com.example.trainticketing.service;
 
+import com.example.trainticketing.model.JourneyOption;
+import com.example.trainticketing.model.Station;
 import com.example.trainticketing.model.Train;
 import com.example.trainticketing.repository.TrainRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RouteService {
@@ -13,6 +16,72 @@ public class RouteService {
     }
 
     public List<Train> searchDirectTrains(String departureStation, String arrivalStation) {
+        validateStations(departureStation, arrivalStation);
+        return trainRepository.findTrainsBetweenStations(departureStation, arrivalStation);
+    }
+
+    public List<JourneyOption> searchJourneys(String departureStation, String arrivalStation) {
+        validateStations(departureStation, arrivalStation);
+
+        List<JourneyOption> journeyOptions = new ArrayList<>();
+
+        List<Train> directTrains = searchDirectTrains(departureStation, arrivalStation);
+
+        for (Train train : directTrains) {
+            journeyOptions.add(new JourneyOption(train, null, null));
+        }
+
+        List<Train> allTrains = trainRepository.getAllTrains();
+
+        for (Train firstTrain : allTrains) {
+            if (!firstTrain.getRoute().containsStation(departureStation)) {
+                continue;
+            }
+
+            for (Station possibleChangeoverStation : firstTrain.getRoute().getStations()) {
+                String changeoverStationName = possibleChangeoverStation.getName();
+
+                if (changeoverStationName.equalsIgnoreCase(departureStation)
+                        || changeoverStationName.equalsIgnoreCase(arrivalStation)) {
+                    continue;
+                }
+
+                if (!firstTrain.getRoute().hasDirectConnection(departureStation, changeoverStationName)) {
+                    continue;
+                }
+
+                for (Train secondTrain : allTrains) {
+                    if (firstTrain.getTrainId().equalsIgnoreCase(secondTrain.getTrainId())) {
+                        continue;
+                    }
+
+                    if (secondTrain.getRoute().hasDirectConnection(changeoverStationName, arrivalStation)) {
+                        journeyOptions.add(new JourneyOption(firstTrain, secondTrain, changeoverStationName));
+                    }
+                }
+            }
+        }
+
+        return journeyOptions;
+    }
+
+    public void displaySearchResults(String departureStation, String arrivalStation) {
+        List<JourneyOption> journeyOptions = searchJourneys(departureStation, arrivalStation);
+
+        System.out.println("\nSearch results from " + departureStation + " to " + arrivalStation + ":");
+
+        if (journeyOptions.isEmpty()) {
+            System.out.println("No train route found.");
+            return;
+        }
+
+        for (JourneyOption journeyOption : journeyOptions) {
+            System.out.println(journeyOption);
+            System.out.println();
+        }
+    }
+
+    private void validateStations(String departureStation, String arrivalStation) {
         if (departureStation == null || departureStation.isBlank()) {
             throw new IllegalArgumentException("Departure station cannot be empty.");
         }
@@ -23,23 +92,6 @@ public class RouteService {
 
         if (departureStation.equalsIgnoreCase(arrivalStation)) {
             throw new IllegalArgumentException("Departure and arrival stations cannot be the same.");
-        }
-
-        return trainRepository.findTrainsBetweenStations(departureStation, arrivalStation);
-    }
-
-    public void displaySearchResults(String departureStation, String arrivalStation) {
-        List<Train> trains = searchDirectTrains(departureStation, arrivalStation);
-
-        System.out.println("\nSearch results from " + departureStation + " to " + arrivalStation + ":");
-
-        if (trains.isEmpty()) {
-            System.out.println("No direct train route found.");
-            return;
-        }
-
-        for (Train train : trains) {
-            System.out.println(train);
         }
     }
 }
