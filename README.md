@@ -41,6 +41,7 @@ Bookings are also saved to a JSON file for persistence and later inspection.
 - Store booking status using a `BookingStatus` enum
 - Separate customer and administrator menus
 - Include unit tests for booking and route search functionality
+- Use custom exceptions for clearer booking, route search, and train lookup error handling
 
 ## Technologies Used
 
@@ -72,6 +73,11 @@ src/
 │           │       └── SensorMonitoringService.java
 │           │
 │           └── trainticketing/
+|               ├── exception/
+|               │   ├── InvalidBookingException.java
+|               │   ├── NoRouteFoundException.java
+|               │   ├── OverbookingException.java
+|               │   └── TrainNotFoundException.java
 │               ├── Main.java
 │               ├── enums/
 │               │   └── BookingStatus.java
@@ -831,6 +837,17 @@ CANCELLED
 
 At the moment, new bookings are created with the `CONFIRMED` status.
 
+### Exception Package
+
+Contains custom exceptions used for clearer error handling:
+
+- `InvalidBookingException`
+- `OverbookingException`
+- `NoRouteFoundException`
+- `TrainNotFoundException`
+
+These exceptions are used for booking validation, overbooking prevention, route search errors, and train lookup errors.
+
 ### Model Layer
 
 Contains the main data classes:
@@ -855,9 +872,9 @@ This project does not require an external database. The repositories use lists t
 
 Contains the main business logic:
 
-- `BookingService` handles ticket booking, available seat calculation, overbooking prevention, and booking persistence
+- `BookingService` handles ticket booking, available seat calculation, overbooking prevention, booking persistence, and booking-related exceptions
 - `BookingFileService` saves booking data to JSON
-- `RouteService` handles direct route search and route search with one train changeover
+- `RouteService` handles direct route search, route search with one train changeover, and no-route error handling
 - `AdminService` handles administrator operations such as viewing bookings and reporting delays
 - `EmailService` defines email functionality
 - `ConsoleEmailService` simulates email sending in the console
