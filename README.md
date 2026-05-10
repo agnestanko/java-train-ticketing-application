@@ -42,6 +42,8 @@ Bookings are also saved to a JSON file for persistence and later inspection.
 - Separate customer and administrator menus
 - Include unit tests for booking and route search functionality
 - Use custom exceptions for clearer booking, route search, and train lookup error handling
+- Admin can view stations, routes, and trains
+- Admin can remove trains from the system
 
 ## Technologies Used
 
@@ -201,7 +203,10 @@ The admin menu contains the administrator-related operations:
 1. View bookings for train
 2. Report train delay
 3. Show all trains
-4. Back to main menu
+4. Show all stations
+5. Show all routes
+6. Remove train
+7. Back to main menu
 Choose an option:
 ```
 
@@ -261,8 +266,12 @@ Enter departure station: Timisoara Nord
 Enter arrival station: Bucuresti Nord
 
 Search results from Timisoara Nord to Bucuresti Nord:
-IR1746 - InterRegio Timisoara Nord - Bucuresti Nord [InterRegio], capacity: 120, price: 89.50 RON, route: Timisoara Nord to Bucuresti Nord Route, Departure: 2026-05-10 07:15, Arrival: 2026-05-10 17:45, delay: 0 minutes
+Direct journey:
+Train: IR1746 - InterRegio Timisoara Nord - Bucuresti Nord
+Route: Timisoara Nord to Bucuresti Nord Route
+Schedule: Departure: 2026-05-10 07:15, Arrival: 2026-05-10 17:45
 ```
+
 ### 2.1. Search Train Route with Changeover
 
 Input:
@@ -272,14 +281,18 @@ Input:
 2
 Oradea
 Timisoara Nord
+```
 
 Explanation:
 
+```text
 1 = Open Customer menu
 2 = Search train route
+```
 
 Output:
 
+```text
 ===== SEARCH TRAIN ROUTE =====
 Enter departure station: Oradea
 Enter arrival station: Timisoara Nord
@@ -289,6 +302,7 @@ Changeover journey:
 First train: IR1833 - InterRegio Oradea - Bucuresti Nord
 Changeover station: Cluj-Napoca
 Second train: IR3001 - InterRegio Cluj-Napoca - Timisoara Nord
+```
 
 ### 3. Book Ticket
 
@@ -471,9 +485,38 @@ Available seats: 100
 
 R2602 - Regio Arad - Timisoara Nord [Regio], capacity: 80, price: 18.50 RON, route: Arad to Timisoara Nord Route, Departure: 2026-05-10 06:40, Arrival: 2026-05-10 07:55, delay: 0 minutes
 Available seats: 80
+
+IR3001 - InterRegio Cluj-Napoca - Timisoara Nord [InterRegio], capacity: 90, price: 62.00 RON, route: Cluj-Napoca to Timisoara Nord Route, Departure: 2026-05-10 14:20, Arrival: 2026-05-10 19:10, delay: 0 minutes
+Available seats: 90
 ```
 
-### 8. Exit
+### 8. Remove Train
+
+Input:
+
+```text
+2
+6
+R2602
+```
+
+Explanation:
+
+```text
+2 = Open Admin menu
+6 = Remove train
+R2602 = Train ID to remove
+```
+
+Output:
+
+```text
+===== REMOVE TRAIN =====
+Enter train ID to remove: R2602
+Train removed successfully: R2602 - Regio Arad - Timisoara Nord
+```
+
+### 9. Exit
 
 Input:
 
