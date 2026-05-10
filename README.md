@@ -35,6 +35,7 @@ The project is implemented using object-oriented programming principles and is d
 - Git
 - GitHub
 - IntelliJ IDEA
+- Jackson Databind
 
 ## Project Structure
 
@@ -60,6 +61,7 @@ src/
 │           │   └── TrainRepository.java
 │           └── service/
 │               ├── AdminService.java
+|               ├── BookingFileService.java
 │               ├── BookingService.java
 │               ├── ConsoleEmailService.java
 │               ├── EmailService.java
@@ -70,6 +72,8 @@ src/
         └── com/example/trainticketing/
             ├── BookingServiceTest.java
             └── RouteServiceTest.java
+data/
+└── bookings.json
 ```
 
 ## Sample Data
@@ -515,6 +519,38 @@ Requested tickets: 3
 Result: Booking failed because only 2 seats are available.
 ```
 
+## Booking Persistence
+
+The application saves created bookings to a JSON file:
+
+```text
+data/bookings.json
+```
+This file stores booking history in a readable format.
+Example saved booking:
+```
+[
+  {
+    "bookingId": "BK-EC5C6E79",
+    "customerName": "Andrei Popescu",
+    "customerEmail": "andrei.popescu@example.com",
+    "trainId": "IR1746",
+    "trainName": "InterRegio Timisoara Nord - Bucuresti Nord",
+    "trainType": "InterRegio",
+    "route": "Timisoara Nord to Bucuresti Nord Route",
+    "departureTime": "2026-05-10T07:15",
+    "arrivalTime": "2026-05-10T17:45",
+    "numberOfTickets": 4,
+    "pricePerTicket": 89.5,
+    "totalPrice": 358.0,
+    "status": "CONFIRMED",
+    "bookingTime": "2026-05-10T17:50:25.222066300"
+  }
+]
+```
+The JSON export is handled by BookingFileService using Jackson Databind.
+```
+
 ## Email Validation
 
 The application validates the customer email address before creating a booking.
@@ -644,7 +680,8 @@ The project also contains service and repository methods that support adding and
 
 ## Current Limitations
 
-- Data is stored in memory, so it resets when the program restarts
+- Stations, routes, and trains are stored in memory, so they reset when the program restarts
+- Bookings are saved to `data/bookings.json`
 - Email notifications are simulated in the console by default
 - Route search currently supports direct routes from the predefined train route order
 - The application is console-based and does not include a graphical interface
@@ -657,7 +694,6 @@ The project also contains service and repository methods that support adding and
 - Add login system for administrators
 - Add support for more complex route changeovers
 - Add a graphical interface or web interface
-- Save bookings to files or database
 - Add more unit tests
 - Add booking cancellation functionality using the `CANCELLED` status
 
