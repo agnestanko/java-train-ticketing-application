@@ -421,15 +421,24 @@ Thank you for using the Train Ticketing Application.
 
 ## Testing
 
-The project includes JUnit tests for important functionality.
+The project includes JUnit tests for both implemented problems.
 
 Tested features:
+
+### Problem 1 - Train Ticketing
 
 - Booking succeeds when seats are available
 - Booking fails when there are not enough seats
 - Route search finds a direct route
 - Route search returns an empty result when no route exists
 - Route search fails when departure and arrival stations are the same
+
+### Problem 2 - Industrial Monitoring
+
+- Normal sensor reading does not create an alarm
+- High sensor reading creates an alarm
+- Low sensor reading creates an alarm
+- Alarm history stores all generated alarms
 
 Run tests in IntelliJ by right-clicking:
 
