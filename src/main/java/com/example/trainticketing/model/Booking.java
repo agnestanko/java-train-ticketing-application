@@ -1,5 +1,5 @@
 package com.example.trainticketing.model;
-
+import com.example.trainticketing.enums.BookingStatus;
 import java.time.LocalDateTime;
 
 public class Booking {
@@ -8,7 +8,7 @@ public class Booking {
     private Train train;
     private int numberOfTickets;
     private LocalDateTime bookingTime;
-    private String status;
+    private BookingStatus status;
 
     public Booking(String bookingId, Customer customer, Train train, int numberOfTickets) {
         this.bookingId = bookingId;
@@ -16,7 +16,7 @@ public class Booking {
         this.train = train;
         this.numberOfTickets = numberOfTickets;
         this.bookingTime = LocalDateTime.now();
-        this.status = "CONFIRMED";
+        this.status = BookingStatus.CONFIRMED;
     }
 
     public String getBookingId() {
@@ -59,11 +59,11 @@ public class Booking {
         this.bookingTime = bookingTime;
     }
 
-    public String getStatus() {
+    public BookingStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(BookingStatus status) {
         this.status = status;
     }
 

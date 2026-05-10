@@ -145,14 +145,36 @@ public class Main {
         boolean running = true;
 
         while (running) {
-            System.out.println("\n===== TRAIN TICKETING SYSTEM =====");
+            System.out.println("\n===== MAIN MENU =====");
+            System.out.println("1. Customer menu");
+            System.out.println("2. Admin menu");
+            System.out.println("3. Exit");
+            System.out.print("Choose an option: ");
+
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1" -> showCustomerMenu();
+                case "2" -> showAdminMenu();
+                case "3" -> {
+                    System.out.println("Thank you for using the Train Ticketing Application.");
+                    running = false;
+                }
+                default -> System.out.println("Invalid option. Please choose a number from 1 to 3.");
+            }
+        }
+    }
+
+    private static void showCustomerMenu() {
+        boolean running = true;
+
+        while (running) {
+            System.out.println("\n===== CUSTOMER MENU =====");
             System.out.println("1. Show all stations");
             System.out.println("2. Search train route");
             System.out.println("3. Book ticket");
-            System.out.println("4. View bookings for train");
-            System.out.println("5. Report train delay");
-            System.out.println("6. Show all trains");
-            System.out.println("7. Exit");
+            System.out.println("4. Show all trains");
+            System.out.println("5. Back to main menu");
             System.out.print("Choose an option: ");
 
             String choice = scanner.nextLine();
@@ -161,14 +183,32 @@ public class Main {
                 case "1" -> showAllStations();
                 case "2" -> searchTrainRoute();
                 case "3" -> bookTicket();
-                case "4" -> viewBookingsForTrain();
-                case "5" -> reportTrainDelay();
-                case "6" -> showAllTrains();
-                case "7" -> {
-                    System.out.println("Thank you for using the Train Ticketing Application.");
-                    running = false;
-                }
-                default -> System.out.println("Invalid option. Please choose a number from 1 to 7.");
+                case "4" -> showAllTrains();
+                case "5" -> running = false;
+                default -> System.out.println("Invalid option. Please choose a number from 1 to 5.");
+            }
+        }
+    }
+
+    private static void showAdminMenu() {
+        boolean running = true;
+
+        while (running) {
+            System.out.println("\n===== ADMIN MENU =====");
+            System.out.println("1. View bookings for train");
+            System.out.println("2. Report train delay");
+            System.out.println("3. Show all trains");
+            System.out.println("4. Back to main menu");
+            System.out.print("Choose an option: ");
+
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1" -> viewBookingsForTrain();
+                case "2" -> reportTrainDelay();
+                case "3" -> showAllTrains();
+                case "4" -> running = false;
+                default -> System.out.println("Invalid option. Please choose a number from 1 to 4.");
             }
         }
     }
@@ -210,8 +250,7 @@ public class Main {
         System.out.print("Enter customer name: ");
         String customerName = scanner.nextLine();
 
-        System.out.print("Enter customer email: ");
-        String customerEmail = scanner.nextLine();
+        String customerEmail = readValidEmail();
 
         System.out.print("Enter number of tickets: ");
         int numberOfTickets = readIntegerInput();
@@ -301,6 +340,18 @@ public class Main {
             } catch (NumberFormatException exception) {
                 System.out.print("Invalid number. Please enter again: ");
             }
+        }
+    }
+    private static String readValidEmail() {
+        while (true) {
+            System.out.print("Enter customer email: ");
+            String email = scanner.nextLine();
+
+            if (email.contains("@") && email.contains(".") && !email.isBlank()) {
+                return email;
+            }
+
+            System.out.println("Invalid email address. Please enter a valid email, for example: customer@example.com");
         }
     }
 }
