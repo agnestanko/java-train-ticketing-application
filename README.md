@@ -67,6 +67,7 @@ src/
 │           │   ├── IndustrialMonitoringMain.java
 │           │   ├── model/
 │           │   │   ├── Alarm.java
+│           │   ├── AlarmSeverity.java
 │           │   │   ├── Sensor.java
 │           │   │   ├── SensorReading.java
 │           │   │   └── SensorType.java
@@ -726,6 +727,8 @@ LEVEL-401 - Tank level sensor
 - Alarm messages for values below or above allowed limits
 - Alarm history display
 - Alarm persistence in `data/alarms.json`
+- Alarm severity classification as `WARNING` or `CRITICAL`
+- Recommended maintenance actions for each alarm
 - Separate package from the train ticketing application
 
 ## How to Run Problem 2
@@ -797,7 +800,9 @@ Example saved alarm:
     "minimumAllowedValue": 2.0,
     "maximumAllowedValue": 10.0,
     "message": "Hydraulic pressure transducer is above the maximum allowed value.",
-    "timestamp": "2026-05-10T18:46:59.507058700"
+    "timestamp": "2026-05-10T18:46:59.507058700",
+    "severity": "WARNING",
+    "recommendedAction": "Inspect pressure regulator, safety valve, and hydraulic circuit."
   }
 ]
 ```
@@ -938,12 +943,13 @@ Contains the main industrial monitoring classes:
 - `SensorType`
 - `SensorReading`
 - `Alarm`
+- `AlarmSeverity`
 
 ### Service Layer
 
 Contains the monitoring and persistence logic:
 
-- `SensorMonitoringService` handles sensor readings, range checking, alarm generation, and alarm history
+- `SensorMonitoringService` handles sensor readings, range checking, alarm generation, alarm severity calculation, maintenance recommendations, and alarm history
 - `AlarmFileService` saves alarm data to JSON
 
 # Current Limitations
