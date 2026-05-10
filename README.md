@@ -2,11 +2,25 @@
 
 ## Project Description
 
-This project is a Java console application for searching train routes, booking train tickets, managing train data, and notifying customers about bookings and delays.
+This repository contains two Java console applications developed for a technical test.
 
-The application uses predefined Romanian train stations, routes, schedules, and trains. Customers can search for available routes, book one or multiple tickets, and receive a simulated email confirmation. Administrators can view bookings and report train delays. When a delay is reported, booked customers are notified through a simulated email message in the console.
+The main project is a train ticketing application. It allows users to search train routes, book tickets, prevent overbooking, receive simulated email notifications, and save bookings to a JSON file.
 
-The project is implemented using object-oriented programming principles and is divided into model, repository, and service layers.
+The repository also includes an optional second problem: an industrial sensor monitoring and alarm system inspired by PLC and SCADA environments. It monitors simulated industrial sensors and saves alarm information to a JSON file.
+
+Both solutions are implemented using object-oriented programming principles and are organized into clear packages, models, services, and tests.
+
+---
+
+# Problem 1: Train Ticketing Application
+
+## Description
+
+The train ticketing application uses predefined Romanian train stations, routes, schedules, and trains.
+
+Customers can search for available routes, book one or multiple tickets, and receive a simulated email confirmation. Administrators can view bookings and report train delays. When a delay is reported, booked customers are notified through a simulated email message in the console.
+
+Bookings are also saved to a JSON file for persistence and later inspection.
 
 ## Main Features
 
@@ -20,6 +34,7 @@ The project is implemented using object-oriented programming principles and is d
 - Report train delays
 - Send simulated delay notification emails
 - Optional SMTP email service for real email sending
+- Save bookings to `data/bookings.json`
 - Use predefined Romanian stations, routes, trains, and schedules
 - Calculate ticket price and total booking price
 - Store booking status using a `BookingStatus` enum
@@ -31,11 +46,11 @@ The project is implemented using object-oriented programming principles and is d
 - Java 17 or newer
 - Maven
 - JUnit 5
+- Jackson Databind
 - Jakarta Mail / Angus Mail
 - Git
 - GitHub
 - IntelliJ IDEA
-- Jackson Databind
 
 ## Project Structure
 
@@ -43,36 +58,54 @@ The project is implemented using object-oriented programming principles and is d
 src/
 ├── main/
 │   └── java/
-│       └── com/example/trainticketing/
-│           ├── Main.java
-│           ├── enums/
-│           │   └── BookingStatus.java
-│           ├── model/
-│           │   ├── Booking.java
-│           │   ├── Customer.java
-│           │   ├── Route.java
-│           │   ├── Schedule.java
-│           │   ├── Station.java
-│           │   └── Train.java
-│           ├── repository/
-│           │   ├── BookingRepository.java
-│           │   ├── RouteRepository.java
-│           │   ├── StationRepository.java
-│           │   └── TrainRepository.java
-│           └── service/
-│               ├── AdminService.java
-|               ├── BookingFileService.java
-│               ├── BookingService.java
-│               ├── ConsoleEmailService.java
-│               ├── EmailService.java
-│               ├── RouteService.java
-│               └── SmtpEmailService.java
+│       └── com/example/
+│           ├── industrialmonitoring/
+│           │   ├── IndustrialMonitoringMain.java
+│           │   ├── model/
+│           │   │   ├── Alarm.java
+│           │   │   ├── Sensor.java
+│           │   │   ├── SensorReading.java
+│           │   │   └── SensorType.java
+│           │   └── service/
+│           │       ├── AlarmFileService.java
+│           │       └── SensorMonitoringService.java
+│           │
+│           └── trainticketing/
+│               ├── Main.java
+│               ├── enums/
+│               │   └── BookingStatus.java
+│               ├── model/
+│               │   ├── Booking.java
+│               │   ├── Customer.java
+│               │   ├── Route.java
+│               │   ├── Schedule.java
+│               │   ├── Station.java
+│               │   └── Train.java
+│               ├── repository/
+│               │   ├── BookingRepository.java
+│               │   ├── RouteRepository.java
+│               │   ├── StationRepository.java
+│               │   └── TrainRepository.java
+│               └── service/
+│                   ├── AdminService.java
+│                   ├── BookingFileService.java
+│                   ├── BookingService.java
+│                   ├── ConsoleEmailService.java
+│                   ├── EmailService.java
+│                   ├── RouteService.java
+│                   └── SmtpEmailService.java
+│
 └── test/
     └── java/
-        └── com/example/trainticketing/
-            ├── BookingServiceTest.java
-            └── RouteServiceTest.java
+        └── com/example/
+            ├── industrialmonitoring/
+            │   └── IndustrialMonitoringServiceTest.java
+            └── trainticketing/
+                ├── BookingServiceTest.java
+                └── RouteServiceTest.java
+
 data/
+├── alarms.json
 └── bookings.json
 ```
 
@@ -105,7 +138,7 @@ IR1833 - InterRegio Oradea - Bucuresti Nord
 R2602 - Regio Arad - Timisoara Nord
 ```
 
-## How to Run the Project
+## How to Run Problem 1
 
 Clone the repository:
 
@@ -419,93 +452,40 @@ Output:
 Thank you for using the Train Ticketing Application.
 ```
 
-## Testing
+## Booking Persistence
 
-The project includes JUnit tests for both implemented problems.
-
-Tested features:
-
-### Problem 1 - Train Ticketing
-
-- Booking succeeds when seats are available
-- Booking fails when there are not enough seats
-- Route search finds a direct route
-- Route search returns an empty result when no route exists
-- Route search fails when departure and arrival stations are the same
-
-### Problem 2 - Industrial Monitoring
-
-- Normal sensor reading does not create an alarm
-- High sensor reading creates an alarm
-- Low sensor reading creates an alarm
-- Alarm history stores all generated alarms
-
-Run tests in IntelliJ by right-clicking:
+The application saves created bookings to a JSON file:
 
 ```text
-src/test/java
+data/bookings.json
 ```
 
-and selecting:
+This file stores booking history in a readable format.
 
-```text
-Run Tests in java
+Example saved booking:
+
+```json
+[
+  {
+    "bookingId": "BK-EC5C6E79",
+    "customerName": "Andrei Popescu",
+    "customerEmail": "andrei.popescu@example.com",
+    "trainId": "IR1746",
+    "trainName": "InterRegio Timisoara Nord - Bucuresti Nord",
+    "trainType": "InterRegio",
+    "route": "Timisoara Nord to Bucuresti Nord Route",
+    "departureTime": "2026-05-10T07:15",
+    "arrivalTime": "2026-05-10T17:45",
+    "numberOfTickets": 4,
+    "pricePerTicket": 89.5,
+    "totalPrice": 358.0,
+    "status": "CONFIRMED",
+    "bookingTime": "2026-05-10T17:50:25.222066300"
+  }
+]
 ```
 
-Or with Maven:
-
-```bash
-mvn test
-```
-
-## Design Explanation
-
-The application is divided into three main layers, plus an enum package.
-
-### Enum Package
-
-Contains enum values used by the application:
-
-- `BookingStatus`
-
-The `BookingStatus` enum currently supports:
-
-```text
-CONFIRMED
-CANCELLED
-```
-
-At the moment, new bookings are created with the `CONFIRMED` status.
-
-### Model Layer
-
-Contains the main data classes:
-
-- `Station`
-- `Route`
-- `Train`
-- `Schedule`
-- `Customer`
-- `Booking`
-
-These classes represent the main objects used by the train ticketing system.
-
-### Repository Layer
-
-Stores data in memory using Java collections.
-
-This project does not require an external database. The repositories use lists to store stations, routes, trains, and bookings.
-
-### Service Layer
-
-Contains the main business logic:
-
-- `BookingService` handles ticket booking, available seat calculation, and overbooking prevention
-- `RouteService` handles route search
-- `AdminService` handles administrator operations such as viewing bookings and reporting delays
-- `EmailService` defines email functionality
-- `ConsoleEmailService` simulates email sending in the console
-- `SmtpEmailService` provides an optional SMTP-based implementation for real email sending
+The JSON export is handled by `BookingFileService` using Jackson Databind.
 
 ## Overbooking Prevention
 
@@ -526,38 +506,6 @@ Train capacity: 120
 Already booked seats: 118
 Requested tickets: 3
 Result: Booking failed because only 2 seats are available.
-```
-
-## Booking Persistence
-
-The application saves created bookings to a JSON file:
-
-```text
-data/bookings.json
-```
-This file stores booking history in a readable format.
-Example saved booking:
-```
-[
-  {
-    "bookingId": "BK-EC5C6E79",
-    "customerName": "Andrei Popescu",
-    "customerEmail": "andrei.popescu@example.com",
-    "trainId": "IR1746",
-    "trainName": "InterRegio Timisoara Nord - Bucuresti Nord",
-    "trainType": "InterRegio",
-    "route": "Timisoara Nord to Bucuresti Nord Route",
-    "departureTime": "2026-05-10T07:15",
-    "arrivalTime": "2026-05-10T17:45",
-    "numberOfTickets": 4,
-    "pricePerTicket": 89.5,
-    "totalPrice": 358.0,
-    "status": "CONFIRMED",
-    "bookingTime": "2026-05-10T17:50:25.222066300"
-  }
-]
-```
-The JSON export is handled by BookingFileService using Jackson Databind.
 ```
 
 ## Email Validation
@@ -606,34 +554,6 @@ The application sends console email notifications for:
 - successful booking confirmation
 - train delay notification
 
-Example console email output:
-
-```text
-===== EMAIL NOTIFICATION =====
-To: alice@example.com
-Subject: Train Ticket Booking Confirmation - BK-12345678
-Message:
-Dear Alice Brown,
-
-Your booking has been confirmed successfully.
-
-Booking details:
-Booking ID: BK-12345678
-Status: CONFIRMED
-Train: IR1746 - InterRegio Timisoara Nord - Bucuresti Nord
-Train type: InterRegio
-Route: Timisoara Nord to Bucuresti Nord Route
-Schedule: Departure: 2026-05-10 07:15, Arrival: 2026-05-10 17:45
-Tickets: 2
-Price per ticket: 89.50 RON
-Total price: 179.00 RON
-
-Please arrive at the station at least 15 minutes before departure.
-
-Thank you for using our Train Ticketing Application.
-==============================
-```
-
 ### SmtpEmailService
 
 `SmtpEmailService` is an optional realistic implementation that can send real emails through an SMTP server.
@@ -676,37 +596,11 @@ Important: real email credentials should never be written directly in the code o
 
 The SMTP implementation is included to show how the project could be extended for real-world email delivery, while the console implementation remains the default option for simple testing and project demonstration.
 
-## Administrator Functionalities
+---
 
-The administrator can:
+# Problem 2: Industrial Sensor Monitoring and Alarm System
 
-- view all trains
-- view bookings for a selected train
-- report train delays
-- notify customers about delays
-
-The project also contains service and repository methods that support adding and removing stations, routes, and trains.
-
-## Current Limitations
-
-- Stations, routes, and trains are stored in memory, so they reset when the program restarts
-- Bookings are saved to `data/bookings.json`
-- Email notifications are simulated in the console by default
-- Route search currently supports direct routes from the predefined train route order
-- The application is console-based and does not include a graphical interface
-- Administrator login is not implemented yet
-
-## Possible Future Improvements
-
-- Add a real database such as H2, MySQL, or PostgreSQL
-- Activate real email sending using `SmtpEmailService`
-- Add login system for administrators
-- Add support for more complex route changeovers
-- Add a graphical interface or web interface
-- Add more unit tests
-- Add booking cancellation functionality using the `CANCELLED` status
-
-## Optional Problem 2: Industrial Sensor Monitoring and Alarm System
+## Description
 
 This repository also includes a second optional problem implemented separately from the train ticketing application.
 
@@ -714,7 +608,7 @@ The second problem is an industrial sensor monitoring and alarm system inspired 
 
 The system monitors simulated industrial sensors and checks whether their values are inside predefined safe operating ranges. If a value is outside the allowed range, the system generates an alarm.
 
-### Purpose
+## Purpose
 
 The purpose of this problem is to demonstrate basic industrial automation logic in Java.
 
@@ -725,7 +619,7 @@ IF sensor value is outside the allowed range
 THEN alarm is active
 ```
 
-### Implemented Sensor Types
+## Implemented Sensor Types
 
 The application includes the following sensor types:
 
@@ -736,7 +630,7 @@ VIBRATION
 LEVEL
 ```
 
-### Example Sensors
+## Example Sensors
 
 ```text
 TEMP-101  - Boiler temperature sensor
@@ -745,7 +639,7 @@ VIB-301   - Motor vibration sensor
 LEVEL-401 - Tank level sensor
 ```
 
-### Features
+## Features
 
 - Simulated industrial sensors
 - Minimum and maximum allowed values for each sensor
@@ -753,23 +647,10 @@ LEVEL-401 - Tank level sensor
 - Automatic alarm generation
 - Alarm messages for values below or above allowed limits
 - Alarm history display
+- Alarm persistence in `data/alarms.json`
 - Separate package from the train ticketing application
 
-### Package Structure
-
-```text
-src/main/java/com/example/industrialmonitoring/
-├── IndustrialMonitoringMain.java
-├── model/
-│   ├── Alarm.java
-│   ├── Sensor.java
-│   ├── SensorReading.java
-│   └── SensorType.java
-└── service/
-    └── SensorMonitoringService.java
-```
-
-### How to Run Problem 2
+## How to Run Problem 2
 
 Run this file in IntelliJ IDEA:
 
@@ -777,7 +658,7 @@ Run this file in IntelliJ IDEA:
 src/main/java/com/example/industrialmonitoring/IndustrialMonitoringMain.java
 ```
 
-### Example Output
+## Example Output
 
 ```text
 ===== INDUSTRIAL SENSOR MONITORING SYSTEM =====
@@ -814,14 +695,191 @@ Alarm: Tank level sensor is below the minimum allowed value.
 ALARM ID: AL-12345678, Sensor: PRESS-201 - Hydraulic pressure transducer, Actual value: 11.2 bar, Message: Hydraulic pressure transducer is above the maximum allowed value.
 ```
 
-### Notes
+## Alarm Persistence
+
+The industrial monitoring application saves generated alarms to a JSON file:
+
+```text
+data/alarms.json
+```
+
+This file stores alarm history in a readable format, similar to how industrial monitoring systems keep alarm logs for analysis, maintenance, and troubleshooting.
+
+Example saved alarm:
+
+```json
+[
+  {
+    "alarmId": "AL-97D9E627",
+    "sensorId": "PRESS-201",
+    "sensorName": "Hydraulic pressure transducer",
+    "sensorType": "PRESSURE",
+    "actualValue": 11.2,
+    "unit": "bar",
+    "minimumAllowedValue": 2.0,
+    "maximumAllowedValue": 10.0,
+    "message": "Hydraulic pressure transducer is above the maximum allowed value.",
+    "timestamp": "2026-05-10T18:46:59.507058700"
+  }
+]
+```
+
+The JSON export is handled by `AlarmFileService` using Jackson Databind.
+
+## Notes
 
 This problem does not connect to a real PLC. It simulates PLC-like monitoring logic in Java, making it easy to run without hardware while still demonstrating industrial automation concepts.
 
-## Author
+---
+
+# Testing
+
+The project includes JUnit tests for both implemented problems.
+
+## Problem 1 - Train Ticketing
+
+Tested features:
+
+- Booking succeeds when seats are available
+- Booking fails when there are not enough seats
+- Route search finds a direct route
+- Route search returns an empty result when no route exists
+- Route search fails when departure and arrival stations are the same
+
+## Problem 2 - Industrial Monitoring
+
+Tested features:
+
+- Normal sensor reading does not create an alarm
+- High sensor reading creates an alarm
+- Low sensor reading creates an alarm
+- Alarm history stores all generated alarms
+
+Run tests in IntelliJ by right-clicking:
+
+```text
+src/test/java
+```
+
+and selecting:
+
+```text
+Run Tests in java
+```
+
+Or with Maven:
+
+```bash
+mvn test
+```
+
+# Design Explanation
+
+The application is divided into separate packages for each problem.
+
+## Train Ticketing Design
+
+The train ticketing application contains:
+
+- enum package
+- model layer
+- repository layer
+- service layer
+
+### Enum Package
+
+Contains enum values used by the application:
+
+- `BookingStatus`
+
+The `BookingStatus` enum currently supports:
+
+```text
+CONFIRMED
+CANCELLED
+```
+
+At the moment, new bookings are created with the `CONFIRMED` status.
+
+### Model Layer
+
+Contains the main data classes:
+
+- `Station`
+- `Route`
+- `Train`
+- `Schedule`
+- `Customer`
+- `Booking`
+
+### Repository Layer
+
+Stores data in memory using Java collections.
+
+This project does not require an external database. The repositories use lists to store stations, routes, trains, and bookings.
+
+### Service Layer
+
+Contains the main business logic:
+
+- `BookingService` handles ticket booking, available seat calculation, overbooking prevention, and booking persistence
+- `BookingFileService` saves booking data to JSON
+- `RouteService` handles route search
+- `AdminService` handles administrator operations such as viewing bookings and reporting delays
+- `EmailService` defines email functionality
+- `ConsoleEmailService` simulates email sending in the console
+- `SmtpEmailService` provides an optional SMTP-based implementation for real email sending
+
+## Industrial Monitoring Design
+
+The industrial monitoring application contains:
+
+- model layer
+- service layer
+
+### Model Layer
+
+Contains the main industrial monitoring classes:
+
+- `Sensor`
+- `SensorType`
+- `SensorReading`
+- `Alarm`
+
+### Service Layer
+
+Contains the monitoring and persistence logic:
+
+- `SensorMonitoringService` handles sensor readings, range checking, alarm generation, and alarm history
+- `AlarmFileService` saves alarm data to JSON
+
+# Current Limitations
+
+- Stations, routes, and trains are predefined in memory
+- Bookings are saved to JSON, but they are not automatically loaded when the application starts
+- Alarm logs are saved to JSON, but they are not automatically loaded when the application starts
+- Route search currently supports direct routes from the predefined train route order
+- The application is console-based and does not include a graphical interface
+- Administrator login is not implemented yet
+- The industrial monitoring system does not connect to a real PLC or physical sensors
+
+# Possible Future Improvements
+
+- Load saved bookings from JSON when the application starts
+- Load saved alarm logs from JSON when the application starts
+- Add a real database such as H2, MySQL, or PostgreSQL
+- Activate real email sending using `SmtpEmailService`
+- Add login system for administrators
+- Add support for more complex route changeovers
+- Add a graphical interface or web interface
+- Add more unit tests
+- Add booking cancellation functionality using the `CANCELLED` status
+- Connect the industrial monitoring system to real PLC or sensor data in the future
+
+# Author
 
 Agnes-Maria Tanko
 
-## Repository Link
+# Repository Link
 
 https://github.com/agnestanko/java-train-ticketing-application
