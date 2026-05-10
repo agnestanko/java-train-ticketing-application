@@ -22,6 +22,7 @@ import java.util.Scanner;
 import java.util.UUID;
 
 import com.example.trainticketing.exception.NoRouteFoundException;
+import com.example.trainticketing.exception.TrainNotFoundException;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
@@ -257,33 +258,28 @@ public class Main {
     }
 
     private static void bookTicket() {
-        System.out.println("\n===== BOOK TICKET =====");
-
-        System.out.print("Enter train ID: ");
-        String trainId = scanner.nextLine();
-
-        Train train = trainRepository.findById(trainId).orElse(null);
-
-        if (train == null) {
-            System.out.println("Train not found.");
-            return;
-        }
-
-        System.out.print("Enter customer name: ");
-        String customerName = scanner.nextLine();
-
-        String customerEmail = readValidEmail();
-
-        System.out.print("Enter number of tickets: ");
-        int numberOfTickets = readIntegerInput();
-
-        Customer customer = new Customer(
-                "CU-" + UUID.randomUUID().toString().substring(0, 6).toUpperCase(),
-                customerName,
-                customerEmail
-        );
-
         try {
+            System.out.println("\n===== BOOK TICKET =====");
+
+            System.out.print("Enter train ID: ");
+            String trainId = scanner.nextLine();
+
+            Train train = findTrainById(trainId);
+
+            System.out.print("Enter customer name: ");
+            String customerName = scanner.nextLine();
+
+            String customerEmail = readValidEmail();
+
+            System.out.print("Enter number of tickets: ");
+            int numberOfTickets = readIntegerInput();
+
+            Customer customer = new Customer(
+                    "CU-" + UUID.randomUUID().toString().substring(0, 6).toUpperCase(),
+                    customerName,
+                    customerEmail
+            );
+
             Booking booking = bookingService.bookTickets(customer, train, numberOfTickets);
             System.out.println("Booking created successfully:");
             System.out.println(booking);
@@ -294,48 +290,42 @@ public class Main {
     }
 
     private static void viewBookingsForTrain() {
-        System.out.println("\n===== VIEW BOOKINGS FOR TRAIN =====");
+        try {
+            System.out.println("\n===== VIEW BOOKINGS FOR TRAIN =====");
 
-        System.out.print("Enter train ID: ");
-        String trainId = scanner.nextLine();
+            System.out.print("Enter train ID: ");
+            String trainId = scanner.nextLine();
 
-        Train train = trainRepository.findById(trainId).orElse(null);
+            Train train = findTrainById(trainId);
 
-        if (train == null) {
-            System.out.println("Train not found.");
-            return;
+            List<Booking> bookings = adminService.getBookingsForTrain(train);
+
+            if (bookings.isEmpty()) {
+                System.out.println("No bookings found for this train.");
+                return;
+            }
+
+            bookings.forEach(System.out::println);
+        } catch (RuntimeException exception) {
+            System.out.println("Error: " + exception.getMessage());
         }
-
-        List<Booking> bookings = adminService.getBookingsForTrain(train);
-
-        if (bookings.isEmpty()) {
-            System.out.println("No bookings found for this train.");
-            return;
-        }
-
-        bookings.forEach(System.out::println);
     }
 
     private static void reportTrainDelay() {
-        System.out.println("\n===== REPORT TRAIN DELAY =====");
-
-        System.out.print("Enter train ID: ");
-        String trainId = scanner.nextLine();
-
-        Train train = trainRepository.findById(trainId).orElse(null);
-
-        if (train == null) {
-            System.out.println("Train not found.");
-            return;
-        }
-
-        System.out.print("Enter delay in minutes: ");
-        int delayMinutes = readIntegerInput();
-
         try {
+            System.out.println("\n===== REPORT TRAIN DELAY =====");
+
+            System.out.print("Enter train ID: ");
+            String trainId = scanner.nextLine();
+
+            Train train = findTrainById(trainId);
+
+            System.out.print("Enter delay in minutes: ");
+            int delayMinutes = readIntegerInput();
+
             adminService.reportDelay(train, delayMinutes);
             System.out.println("Delay reported successfully.");
-        } catch (IllegalArgumentException exception) {
+        } catch (RuntimeException exception) {
             System.out.println("Error: " + exception.getMessage());
         }
     }
@@ -375,5 +365,9 @@ public class Main {
 
             System.out.println("Invalid email address. Please enter a valid email, for example: customer@example.com");
         }
+    }
+    private static Train findTrainById(String trainId) {
+        return trainRepository.findById(trainId)
+                .orElseThrow(() -> new TrainNotFoundException("Train with ID " + trainId + " was not found."));
     }
 }
