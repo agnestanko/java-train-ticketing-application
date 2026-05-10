@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import com.example.trainticketing.exception.OverbookingException;
 
 public class BookingServiceTest {
 
@@ -43,7 +44,7 @@ public class BookingServiceTest {
         Customer customer = new Customer("CU-001", "Alice Brown", "alice@example.com");
 
         assertThrows(
-                IllegalArgumentException.class,
+                OverbookingException.class,
                 () -> bookingService.bookTickets(customer, train, 60)
         );
     }

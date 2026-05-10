@@ -8,6 +8,9 @@ import com.example.trainticketing.repository.BookingRepository;
 import java.util.List;
 import java.util.UUID;
 
+import com.example.trainticketing.exception.InvalidBookingException;
+import com.example.trainticketing.exception.OverbookingException;
+
 public class BookingService {
     private final BookingRepository bookingRepository;
     private final EmailService emailService;
@@ -21,13 +24,13 @@ public class BookingService {
 
     public Booking bookTickets(Customer customer, Train train, int numberOfTickets) {
         if (numberOfTickets <= 0) {
-            throw new IllegalArgumentException("Number of tickets must be greater than zero.");
+            throw new InvalidBookingException("Number of tickets must be greater than zero.");
         }
 
         int availableSeats = getAvailableSeats(train);
 
         if (numberOfTickets > availableSeats) {
-            throw new IllegalArgumentException(
+            throw new OverbookingException(
                     "Booking failed. Only " + availableSeats + " seats are available."
             );
         }

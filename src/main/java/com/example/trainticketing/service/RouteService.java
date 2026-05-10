@@ -8,6 +8,8 @@ import com.example.trainticketing.repository.TrainRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.trainticketing.exception.NoRouteFoundException;
+
 public class RouteService {
     private final TrainRepository trainRepository;
 
@@ -71,8 +73,9 @@ public class RouteService {
         System.out.println("\nSearch results from " + departureStation + " to " + arrivalStation + ":");
 
         if (journeyOptions.isEmpty()) {
-            System.out.println("No train route found.");
-            return;
+            throw new NoRouteFoundException(
+                    "No train route found from " + departureStation + " to " + arrivalStation + "."
+            );
         }
 
         for (JourneyOption journeyOption : journeyOptions) {

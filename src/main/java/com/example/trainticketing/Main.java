@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
+import com.example.trainticketing.exception.NoRouteFoundException;
+
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -249,7 +251,7 @@ public class Main {
 
         try {
             routeService.displaySearchResults(departureStation, arrivalStation);
-        } catch (IllegalArgumentException exception) {
+        } catch (NoRouteFoundException | IllegalArgumentException exception) {
             System.out.println("Error: " + exception.getMessage());
         }
     }
@@ -286,7 +288,7 @@ public class Main {
             System.out.println("Booking created successfully:");
             System.out.println(booking);
             System.out.println("Available seats after booking: " + bookingService.getAvailableSeats(train));
-        } catch (IllegalArgumentException exception) {
+        } catch (RuntimeException exception) {
             System.out.println("Error: " + exception.getMessage());
         }
     }
