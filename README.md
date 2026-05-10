@@ -14,13 +14,16 @@ The project is implemented using object-oriented programming principles and is d
 - Display available trains and schedules
 - Book one or multiple tickets
 - Prevent overbooking by checking available seats
+- Validate customer email input before booking
 - Send simulated booking confirmation emails
 - View bookings for a selected train
 - Report train delays
 - Send simulated delay notification emails
+- Optional SMTP email service for real email sending
 - Use predefined Romanian stations, routes, trains, and schedules
 - Calculate ticket price and total booking price
-- Store booking status as CONFIRMED
+- Store booking status using a `BookingStatus` enum
+- Separate customer and administrator menus
 - Include unit tests for booking and route search functionality
 
 ## Technologies Used
@@ -28,6 +31,7 @@ The project is implemented using object-oriented programming principles and is d
 - Java 17 or newer
 - Maven
 - JUnit 5
+- Jakarta Mail / Angus Mail
 - Git
 - GitHub
 - IntelliJ IDEA
@@ -40,6 +44,8 @@ src/
 │   └── java/
 │       └── com/example/trainticketing/
 │           ├── Main.java
+│           ├── enums/
+│           │   └── BookingStatus.java
 │           ├── model/
 │           │   ├── Booking.java
 │           │   ├── Customer.java
@@ -57,7 +63,8 @@ src/
 │               ├── BookingService.java
 │               ├── ConsoleEmailService.java
 │               ├── EmailService.java
-│               └── RouteService.java
+│               ├── RouteService.java
+│               └── SmtpEmailService.java
 └── test/
     └── java/
         └── com/example/trainticketing/
@@ -119,17 +126,36 @@ mvn exec:java
 
 ## Console Menu
 
-When the application starts, the user can choose from the following menu:
+When the application starts, the user first sees the main menu:
 
 ```text
-===== TRAIN TICKETING SYSTEM =====
+===== MAIN MENU =====
+1. Customer menu
+2. Admin menu
+3. Exit
+Choose an option:
+```
+
+The customer menu contains the customer-related operations:
+
+```text
+===== CUSTOMER MENU =====
 1. Show all stations
 2. Search train route
 3. Book ticket
-4. View bookings for train
-5. Report train delay
-6. Show all trains
-7. Exit
+4. Show all trains
+5. Back to main menu
+Choose an option:
+```
+
+The admin menu contains the administrator-related operations:
+
+```text
+===== ADMIN MENU =====
+1. View bookings for train
+2. Report train delay
+3. Show all trains
+4. Back to main menu
 Choose an option:
 ```
 
@@ -141,6 +167,14 @@ Input:
 
 ```text
 1
+1
+```
+
+Explanation:
+
+```text
+1 = Open Customer menu
+1 = Show all stations
 ```
 
 Output:
@@ -160,9 +194,17 @@ Bucuresti Nord (Bucuresti)
 Input:
 
 ```text
+1
 2
 Timisoara Nord
 Bucuresti Nord
+```
+
+Explanation:
+
+```text
+1 = Open Customer menu
+2 = Search train route
 ```
 
 Output:
@@ -181,11 +223,19 @@ IR1746 - InterRegio Timisoara Nord - Bucuresti Nord [InterRegio], capacity: 120,
 Input:
 
 ```text
+1
 3
 IR1746
 Alice Brown
 alice@example.com
 2
+```
+
+Explanation:
+
+```text
+1 = Open Customer menu
+3 = Book ticket
 ```
 
 Output:
@@ -226,13 +276,47 @@ Booking ID: BK-12345678, Customer: Alice Brown, Train: IR1746, Tickets: 2, Total
 Available seats after booking: 118
 ```
 
-### 4. View Bookings for Train
+### 4. Invalid Email Validation
 
 Input:
 
 ```text
-4
+1
+3
 IR1746
+Alice Brown
+wrongemail
+alice@example.com
+2
+```
+
+Output:
+
+```text
+===== BOOK TICKET =====
+Enter train ID: IR1746
+Enter customer name: Alice Brown
+Enter customer email: wrongemail
+Invalid email address. Please enter a valid email, for example: customer@example.com
+Enter customer email: alice@example.com
+Enter number of tickets: 2
+```
+
+### 5. View Bookings for Train
+
+Input:
+
+```text
+2
+1
+IR1746
+```
+
+Explanation:
+
+```text
+2 = Open Admin menu
+1 = View bookings for train
 ```
 
 Output:
@@ -244,14 +328,22 @@ Enter train ID: IR1746
 Booking ID: BK-12345678, Customer: Alice Brown, Train: IR1746, Tickets: 2, Total price: 179.00 RON, Status: CONFIRMED
 ```
 
-### 5. Report Train Delay
+### 6. Report Train Delay
 
 Input:
 
 ```text
-5
+2
+2
 IR1746
 20
+```
+
+Explanation:
+
+```text
+2 = Open Admin menu
+2 = Report train delay
 ```
 
 Output:
@@ -279,12 +371,20 @@ We apologize for the inconvenience.
 Delay reported successfully.
 ```
 
-### 6. Show All Trains
+### 7. Show All Trains
 
-Input:
+Input from Customer menu:
 
 ```text
-6
+1
+4
+```
+
+Or input from Admin menu:
+
+```text
+2
+3
 ```
 
 Output:
@@ -301,12 +401,12 @@ R2602 - Regio Arad - Timisoara Nord [Regio], capacity: 80, price: 18.50 RON, rou
 Available seats: 80
 ```
 
-### 7. Exit
+### 8. Exit
 
 Input:
 
 ```text
-7
+3
 ```
 
 Output:
@@ -336,7 +436,7 @@ src/test/java
 and selecting:
 
 ```text
-Run All Tests
+Run Tests in java
 ```
 
 Or with Maven:
@@ -347,7 +447,22 @@ mvn test
 
 ## Design Explanation
 
-The application is divided into three main layers.
+The application is divided into three main layers, plus an enum package.
+
+### Enum Package
+
+Contains enum values used by the application:
+
+- `BookingStatus`
+
+The `BookingStatus` enum currently supports:
+
+```text
+CONFIRMED
+CANCELLED
+```
+
+At the moment, new bookings are created with the `CONFIRMED` status.
 
 ### Model Layer
 
@@ -377,6 +492,7 @@ Contains the main business logic:
 - `AdminService` handles administrator operations such as viewing bookings and reporting delays
 - `EmailService` defines email functionality
 - `ConsoleEmailService` simulates email sending in the console
+- `SmtpEmailService` provides an optional SMTP-based implementation for real email sending
 
 ## Overbooking Prevention
 
@@ -397,6 +513,20 @@ Train capacity: 120
 Already booked seats: 118
 Requested tickets: 3
 Result: Booking failed because only 2 seats are available.
+```
+
+## Email Validation
+
+The application validates the customer email address before creating a booking.
+
+If the user enters an invalid email address, the application asks for the email again.
+
+Example:
+
+```text
+Enter customer email: wrongemail
+Invalid email address. Please enter a valid email, for example: customer@example.com
+Enter customer email: alice@example.com
 ```
 
 ## Email Notification System
@@ -501,13 +631,6 @@ Important: real email credentials should never be written directly in the code o
 
 The SMTP implementation is included to show how the project could be extended for real-world email delivery, while the console implementation remains the default option for simple testing and project demonstration.
 
-This means that emails are simulated in the console instead of being sent through a real email server.
-
-The application sends emails for:
-
-- successful booking confirmation
-- train delay notification
-
 ## Administrator Functionalities
 
 The administrator can:
@@ -522,7 +645,7 @@ The project also contains service and repository methods that support adding and
 ## Current Limitations
 
 - Data is stored in memory, so it resets when the program restarts
-- Email notifications are simulated in the console
+- Email notifications are simulated in the console by default
 - Route search currently supports direct routes from the predefined train route order
 - The application is console-based and does not include a graphical interface
 - Administrator login is not implemented yet
@@ -530,16 +653,18 @@ The project also contains service and repository methods that support adding and
 ## Possible Future Improvements
 
 - Add a real database such as H2, MySQL, or PostgreSQL
-- Add real email sending using JavaMail or Spring Boot Mail
+- Activate real email sending using `SmtpEmailService`
 - Add login system for administrators
 - Add support for more complex route changeovers
 - Add a graphical interface or web interface
 - Save bookings to files or database
 - Add more unit tests
-- Add input validation for email format
+- Add booking cancellation functionality using the `CANCELLED` status
 
 ## Author
+
 Agnes-Maria Tanko
 
 ## Repository Link
+
 https://github.com/agnestanko/java-train-ticketing-application

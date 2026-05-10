@@ -11,10 +11,12 @@ import java.util.UUID;
 public class BookingService {
     private final BookingRepository bookingRepository;
     private final EmailService emailService;
+    private final BookingFileService bookingFileService;
 
     public BookingService(BookingRepository bookingRepository, EmailService emailService) {
         this.bookingRepository = bookingRepository;
         this.emailService = emailService;
+        this.bookingFileService = new BookingFileService();
     }
 
     public Booking bookTickets(Customer customer, Train train, int numberOfTickets) {
@@ -34,6 +36,7 @@ public class BookingService {
 
         Booking booking = new Booking(bookingId, customer, train, numberOfTickets);
         bookingRepository.addBooking(booking);
+        bookingFileService.saveBooking(booking);
 
         sendBookingConfirmationEmail(booking);
 
