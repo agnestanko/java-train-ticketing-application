@@ -24,7 +24,8 @@ Bookings are also saved to a JSON file for persistence and later inspection.
 
 ## Main Features
 
-- Search train routes between two stations
+- Search direct train routes between two stations
+- Search train journeys with one train changeover
 - Display available trains and schedules
 - Book one or multiple tickets
 - Prevent overbooking by checking available seats
@@ -77,6 +78,7 @@ src/
 │               ├── model/
 │               │   ├── Booking.java
 │               │   ├── Customer.java
+│               │   ├── JourneyOption.java
 │               │   ├── Route.java
 │               │   ├── Schedule.java
 │               │   ├── Station.java
@@ -136,6 +138,7 @@ Predefined trains:
 IR1746 - InterRegio Timisoara Nord - Bucuresti Nord
 IR1833 - InterRegio Oradea - Bucuresti Nord
 R2602 - Regio Arad - Timisoara Nord
+IR3001 - InterRegio Cluj-Napoca - Timisoara Nord
 ```
 
 ## How to Run Problem 1
@@ -254,6 +257,32 @@ Enter arrival station: Bucuresti Nord
 Search results from Timisoara Nord to Bucuresti Nord:
 IR1746 - InterRegio Timisoara Nord - Bucuresti Nord [InterRegio], capacity: 120, price: 89.50 RON, route: Timisoara Nord to Bucuresti Nord Route, Departure: 2026-05-10 07:15, Arrival: 2026-05-10 17:45, delay: 0 minutes
 ```
+### 2.1. Search Train Route with Changeover
+
+Input:
+
+```text
+1
+2
+Oradea
+Timisoara Nord
+
+Explanation:
+
+1 = Open Customer menu
+2 = Search train route
+
+Output:
+
+===== SEARCH TRAIN ROUTE =====
+Enter departure station: Oradea
+Enter arrival station: Timisoara Nord
+
+Search results from Oradea to Timisoara Nord:
+Changeover journey:
+First train: IR1833 - InterRegio Oradea - Bucuresti Nord
+Changeover station: Cluj-Napoca
+Second train: IR3001 - InterRegio Cluj-Napoca - Timisoara Nord
 
 ### 3. Book Ticket
 
@@ -734,7 +763,7 @@ This problem does not connect to a real PLC. It simulates PLC-like monitoring lo
 
 # Testing
 
-The project includes JUnit tests for both implemented problems.
+The project includes JUnit tests for both implemented problems. There are 10 tests in total.
 
 ## Problem 1 - Train Ticketing
 
@@ -745,6 +774,7 @@ Tested features:
 - Route search finds a direct route
 - Route search returns an empty result when no route exists
 - Route search fails when departure and arrival stations are the same
+- Route search finds a journey with one train changeover
 
 ## Problem 2 - Industrial Monitoring
 
@@ -811,6 +841,9 @@ Contains the main data classes:
 - `Schedule`
 - `Customer`
 - `Booking`
+- `JourneyOption`
+
+`JourneyOption` is used to represent either a direct journey or a journey with one train changeover.
 
 ### Repository Layer
 
@@ -824,7 +857,7 @@ Contains the main business logic:
 
 - `BookingService` handles ticket booking, available seat calculation, overbooking prevention, and booking persistence
 - `BookingFileService` saves booking data to JSON
-- `RouteService` handles route search
+- `RouteService` handles direct route search and route search with one train changeover
 - `AdminService` handles administrator operations such as viewing bookings and reporting delays
 - `EmailService` defines email functionality
 - `ConsoleEmailService` simulates email sending in the console
@@ -858,7 +891,7 @@ Contains the monitoring and persistence logic:
 - Stations, routes, and trains are predefined in memory
 - Bookings are saved to JSON, but they are not automatically loaded when the application starts
 - Alarm logs are saved to JSON, but they are not automatically loaded when the application starts
-- Route search currently supports direct routes from the predefined train route order
+- Route search supports direct routes and journeys with one train changeover
 - The application is console-based and does not include a graphical interface
 - Administrator login is not implemented yet
 - The industrial monitoring system does not connect to a real PLC or physical sensors
@@ -870,7 +903,7 @@ Contains the monitoring and persistence logic:
 - Add a real database such as H2, MySQL, or PostgreSQL
 - Activate real email sending using `SmtpEmailService`
 - Add login system for administrators
-- Add support for more complex route changeovers
+- Add support for multiple route changeovers
 - Add a graphical interface or web interface
 - Add more unit tests
 - Add booking cancellation functionality using the `CANCELLED` status
