@@ -697,6 +697,118 @@ The project also contains service and repository methods that support adding and
 - Add more unit tests
 - Add booking cancellation functionality using the `CANCELLED` status
 
+## Optional Problem 2: Industrial Sensor Monitoring and Alarm System
+
+This repository also includes a second optional problem implemented separately from the train ticketing application.
+
+The second problem is an industrial sensor monitoring and alarm system inspired by PLC and SCADA environments used in industrial automation.
+
+The system monitors simulated industrial sensors and checks whether their values are inside predefined safe operating ranges. If a value is outside the allowed range, the system generates an alarm.
+
+### Purpose
+
+The purpose of this problem is to demonstrate basic industrial automation logic in Java.
+
+The monitoring logic is similar to a PLC condition:
+
+```text
+IF sensor value is outside the allowed range
+THEN alarm is active
+```
+
+### Implemented Sensor Types
+
+The application includes the following sensor types:
+
+```text
+TEMPERATURE
+PRESSURE
+VIBRATION
+LEVEL
+```
+
+### Example Sensors
+
+```text
+TEMP-101  - Boiler temperature sensor
+PRESS-201 - Hydraulic pressure transducer
+VIB-301   - Motor vibration sensor
+LEVEL-401 - Tank level sensor
+```
+
+### Features
+
+- Simulated industrial sensors
+- Minimum and maximum allowed values for each sensor
+- Sensor readings with timestamps
+- Automatic alarm generation
+- Alarm messages for values below or above allowed limits
+- Alarm history display
+- Separate package from the train ticketing application
+
+### Package Structure
+
+```text
+src/main/java/com/example/industrialmonitoring/
+├── IndustrialMonitoringMain.java
+├── model/
+│   ├── Alarm.java
+│   ├── Sensor.java
+│   ├── SensorReading.java
+│   └── SensorType.java
+└── service/
+    └── SensorMonitoringService.java
+```
+
+### How to Run Problem 2
+
+Run this file in IntelliJ IDEA:
+
+```text
+src/main/java/com/example/industrialmonitoring/IndustrialMonitoringMain.java
+```
+
+### Example Output
+
+```text
+===== INDUSTRIAL SENSOR MONITORING SYSTEM =====
+PLC-inspired monitoring logic for industrial sensors and alarms.
+
+Sensor: TEMP-101 - Boiler temperature sensor
+Type: TEMPERATURE
+Value: 72.5 °C
+Normal range: 20.0 - 80.0 °C
+Status: NORMAL
+
+Sensor: PRESS-201 - Hydraulic pressure transducer
+Type: PRESSURE
+Value: 11.2 bar
+Normal range: 2.0 - 10.0 bar
+Status: ALARM
+Alarm: Hydraulic pressure transducer is above the maximum allowed value.
+
+Sensor: VIB-301 - Motor vibration sensor
+Type: VIBRATION
+Value: 6.8 mm/s
+Normal range: 0.0 - 5.0 mm/s
+Status: ALARM
+Alarm: Motor vibration sensor is above the maximum allowed value.
+
+Sensor: LEVEL-401 - Tank level sensor
+Type: LEVEL
+Value: 5.0 %
+Normal range: 10.0 - 90.0 %
+Status: ALARM
+Alarm: Tank level sensor is below the minimum allowed value.
+
+===== ALARM HISTORY =====
+ALARM ID: AL-12345678, Sensor: PRESS-201 - Hydraulic pressure transducer, Actual value: 11.2 bar, Message: Hydraulic pressure transducer is above the maximum allowed value.
+```
+
+### Notes
+
+This problem does not connect to a real PLC. It simulates PLC-like monitoring logic in Java, making it easy to run without hardware while still demonstrating industrial automation concepts.
+
 ## Author
 
 Agnes-Maria Tanko
