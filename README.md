@@ -58,6 +58,8 @@ Bookings are also saved to a JSON file for persistence and later inspection.
 
 ## Project Structure
 
+## Project Structure
+
 ```text
 src/
 ├── main/
@@ -67,7 +69,7 @@ src/
 │           │   ├── IndustrialMonitoringMain.java
 │           │   ├── model/
 │           │   │   ├── Alarm.java
-│           │   ├── AlarmSeverity.java
+│           │   │   ├── AlarmSeverity.java
 │           │   │   ├── Sensor.java
 │           │   │   ├── SensorReading.java
 │           │   │   └── SensorType.java
@@ -76,14 +78,14 @@ src/
 │           │       └── SensorMonitoringService.java
 │           │
 │           └── trainticketing/
-|               ├── exception/
-|               │   ├── InvalidBookingException.java
-|               │   ├── NoRouteFoundException.java
-|               │   ├── OverbookingException.java
-|               │   └── TrainNotFoundException.java
 │               ├── Main.java
 │               ├── enums/
 │               │   └── BookingStatus.java
+│               ├── exception/
+│               │   ├── InvalidBookingException.java
+│               │   ├── NoRouteFoundException.java
+│               │   ├── OverbookingException.java
+│               │   └── TrainNotFoundException.java
 │               ├── model/
 │               │   ├── Booking.java
 │               │   ├── Customer.java
@@ -756,24 +758,32 @@ Type: PRESSURE
 Value: 11.2 bar
 Normal range: 2.0 - 10.0 bar
 Status: ALARM
+Severity: WARNING
 Alarm: Hydraulic pressure transducer is above the maximum allowed value.
+Recommended action: Inspect pressure regulator, safety valve, and hydraulic circuit.
 
 Sensor: VIB-301 - Motor vibration sensor
 Type: VIBRATION
 Value: 6.8 mm/s
 Normal range: 0.0 - 5.0 mm/s
 Status: ALARM
+Severity: CRITICAL
 Alarm: Motor vibration sensor is above the maximum allowed value.
+Recommended action: Schedule motor bearing inspection and check mechanical alignment.
 
 Sensor: LEVEL-401 - Tank level sensor
 Type: LEVEL
 Value: 5.0 %
 Normal range: 10.0 - 90.0 %
 Status: ALARM
+Severity: WARNING
 Alarm: Tank level sensor is below the minimum allowed value.
+Recommended action: Check supply pump, inlet valve, and refill tank if necessary.
 
 ===== ALARM HISTORY =====
-ALARM ID: AL-12345678, Sensor: PRESS-201 - Hydraulic pressure transducer, Actual value: 11.2 bar, Message: Hydraulic pressure transducer is above the maximum allowed value.
+ALARM ID: AL-12345678, Severity: WARNING, Sensor: PRESS-201 - Hydraulic pressure transducer, Actual value: 11.2 bar, Message: Hydraulic pressure transducer is above the maximum allowed value., Recommended action: Inspect pressure regulator, safety valve, and hydraulic circuit.
+ALARM ID: AL-23456789, Severity: CRITICAL, Sensor: VIB-301 - Motor vibration sensor, Actual value: 6.8 mm/s, Message: Motor vibration sensor is above the maximum allowed value., Recommended action: Schedule motor bearing inspection and check mechanical alignment.
+ALARM ID: AL-34567890, Severity: WARNING, Sensor: LEVEL-401 - Tank level sensor, Actual value: 5.0 %, Message: Tank level sensor is below the minimum allowed value., Recommended action: Check supply pump, inlet valve, and refill tank if necessary.
 ```
 
 ## Alarm Persistence
