@@ -221,7 +221,10 @@ public class Main {
             System.out.println("1. View bookings for train");
             System.out.println("2. Report train delay");
             System.out.println("3. Show all trains");
-            System.out.println("4. Back to main menu");
+            System.out.println("4. Show all stations");
+            System.out.println("5. Show all routes");
+            System.out.println("6. Remove train");
+            System.out.println("7. Back to main menu");
             System.out.print("Choose an option: ");
 
             String choice = scanner.nextLine();
@@ -230,8 +233,11 @@ public class Main {
                 case "1" -> viewBookingsForTrain();
                 case "2" -> reportTrainDelay();
                 case "3" -> showAllTrains();
-                case "4" -> running = false;
-                default -> System.out.println("Invalid option. Please choose a number from 1 to 4.");
+                case "4" -> showAllStations();
+                case "5" -> showAllRoutes();
+                case "6" -> removeTrainFromInput();
+                case "7" -> running = false;
+                default -> System.out.println("Invalid option. Please choose a number from 1 to 7.");
             }
         }
     }
@@ -239,6 +245,17 @@ public class Main {
     private static void showAllStations() {
         System.out.println("\n===== AVAILABLE STATIONS =====");
         adminService.getAllStations().forEach(System.out::println);
+    }
+
+    private static void showAllRoutes() {
+        System.out.println("\n===== AVAILABLE ROUTES =====");
+
+        if (adminService.getAllRoutes().isEmpty()) {
+            System.out.println("No routes available.");
+            return;
+        }
+
+        adminService.getAllRoutes().forEach(System.out::println);
     }
 
     private static void searchTrainRoute() {
@@ -336,6 +353,23 @@ public class Main {
             System.out.println(train);
             System.out.println("Available seats: " + bookingService.getAvailableSeats(train));
         });
+    }
+
+    private static void removeTrainFromInput() {
+        try {
+            System.out.println("\n===== REMOVE TRAIN =====");
+
+            System.out.print("Enter train ID to remove: ");
+            String trainId = scanner.nextLine();
+
+            Train train = findTrainById(trainId);
+
+            adminService.removeTrain(train);
+
+            System.out.println("Train removed successfully: " + train.getTrainId() + " - " + train.getTrainName());
+        } catch (RuntimeException exception) {
+            System.out.println("Error: " + exception.getMessage());
+        }
     }
 
     private static int readIntegerInput() {
