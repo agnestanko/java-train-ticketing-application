@@ -67,6 +67,8 @@ public class AlarmFileService {
         alarmMap.put("maximumAllowedValue", alarm.getSensor().getMaximumAllowedValue());
         alarmMap.put("message", alarm.getMessage());
         alarmMap.put("timestamp", alarm.getTimestamp().toString());
+        alarmMap.put("severity", alarm.getSeverity().toString());
+        alarmMap.put("recommendedAction", alarm.getRecommendedAction());
 
         return alarmMap;
     }
