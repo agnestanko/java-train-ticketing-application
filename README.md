@@ -407,11 +407,99 @@ The project includes an email service interface:
 EmailService
 ```
 
-The current implementation is:
+The application has two email service implementations:
 
 ```text
 ConsoleEmailService
+SmtpEmailService
 ```
+
+### ConsoleEmailService
+
+`ConsoleEmailService` is the default implementation used by the application.
+
+It simulates email sending by printing the email content in the console. This is useful for testing and demonstration because it does not require an external email account, password, or SMTP configuration.
+
+The application currently uses this implementation in `Main.java`:
+
+```java
+EmailService emailService = new ConsoleEmailService();
+```
+
+The application sends console email notifications for:
+
+- successful booking confirmation
+- train delay notification
+
+Example console email output:
+
+```text
+===== EMAIL NOTIFICATION =====
+To: alice@example.com
+Subject: Train Ticket Booking Confirmation - BK-12345678
+Message:
+Dear Alice Brown,
+
+Your booking has been confirmed successfully.
+
+Booking details:
+Booking ID: BK-12345678
+Status: CONFIRMED
+Train: IR1746 - InterRegio Timisoara Nord - Bucuresti Nord
+Train type: InterRegio
+Route: Timisoara Nord to Bucuresti Nord Route
+Schedule: Departure: 2026-05-10 07:15, Arrival: 2026-05-10 17:45
+Tickets: 2
+Price per ticket: 89.50 RON
+Total price: 179.00 RON
+
+Please arrive at the station at least 15 minutes before departure.
+
+Thank you for using our Train Ticketing Application.
+==============================
+```
+
+### SmtpEmailService
+
+`SmtpEmailService` is an optional realistic implementation that can send real emails through an SMTP server.
+
+This implementation uses environment variables for configuration. This means that private credentials such as usernames, passwords, and sender email addresses are not stored directly in the source code and should not be committed to GitHub.
+
+Required environment variables:
+
+```text
+SMTP_HOST
+SMTP_PORT
+SMTP_USERNAME
+SMTP_PASSWORD
+SMTP_FROM
+```
+
+Example SMTP providers:
+
+```text
+Gmail SMTP
+Outlook SMTP
+Mailtrap
+SendGrid
+Brevo
+```
+
+To use real email sending, the email service creation in `Main.java` can be changed from:
+
+```java
+EmailService emailService = new ConsoleEmailService();
+```
+
+to:
+
+```java
+EmailService emailService = new SmtpEmailService();
+```
+
+Important: real email credentials should never be written directly in the code or committed to GitHub.
+
+The SMTP implementation is included to show how the project could be extended for real-world email delivery, while the console implementation remains the default option for simple testing and project demonstration.
 
 This means that emails are simulated in the console instead of being sent through a real email server.
 
